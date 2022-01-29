@@ -13,7 +13,7 @@
 
         <Border.Background>
             <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1">
-                <GradientStop Color="#c5e3ff" Offset="0"></GradientStop>
+                <GradientStop Color="#C5E3FF" Offset="0"></GradientStop>
                 <GradientStop Color="#95BBEE" Offset="0.7"></GradientStop>
             </LinearGradientBrush>
         </Border.Background>
@@ -76,6 +76,17 @@
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,195"></RectangleGeometry>
                 </Border.Clip>
 
+                <StackPanel Orientation="Vertical">
+                    <TextBlock
+                        Text="ZeiControl"
+                        HorizontalAlignment="Center"
+                        FontSize="28"
+                        Margin="0,30,0,0"/>
+                    <Button 
+                        Width="100"
+                        Content="Exit"
+                        Margin="0,20,0,0"/>
+                </StackPanel>
             </Border>
 
         </Grid>
