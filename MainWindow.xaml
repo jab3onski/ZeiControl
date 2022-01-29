@@ -5,10 +5,70 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZeiControl"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280"
-        ResizeMode="NoResize" ShowInTaskbar="True">
-    
-    <Grid>
+        Title="MainWindow" Height="900" Width="1440"
+        ResizeMode="NoResize" WindowStyle="None"
+        Background="Transparent" AllowsTransparency="True">
 
-    </Grid>
+    <Border Background="#28a3eb" CornerRadius="20">
+        <Grid>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="375"></ColumnDefinition>
+                <ColumnDefinition Width="690"></ColumnDefinition>
+                <ColumnDefinition Width="375"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="675" ></RowDefinition>
+                <RowDefinition Height="225"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!--Column 1-->
+
+            <Border Margin="15" Width="345" Background="White" Grid.Row="0" Grid.Column="0">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,645"></RectangleGeometry>
+                </Border.Clip>
+            </Border>
+
+            <Border Margin="15" Width="345" Background="White" Grid.Row="1" Grid.Column="0">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,195"></RectangleGeometry>
+                </Border.Clip>
+                
+            </Border>
+            
+            <!--Column 2-->
+
+            <Border Margin="15" Width="640" Height="480" Background="White" Grid.Row="0" Grid.Column="1">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,640,480"></RectangleGeometry>
+                </Border.Clip>
+                
+            </Border>
+
+            <Border Margin="15" Width="660" Background="White" Grid.Row="1" Grid.Column="1">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,660,195"></RectangleGeometry>
+                </Border.Clip>
+
+            </Border>
+
+            <!--Column 3-->
+
+            <Border Margin="15" Width="345" Background="White" Grid.Row="0" Grid.Column="2">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,645"></RectangleGeometry>
+                </Border.Clip>
+            </Border>
+
+            <Border Margin="15" Width="345" Background="White" Grid.Row="1" Grid.Column="2">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,195"></RectangleGeometry>
+                </Border.Clip>
+
+            </Border>
+
+        </Grid>
+    </Border>
+
 </Window>
