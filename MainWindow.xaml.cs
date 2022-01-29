@@ -12,27 +12,30 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ZeiControl.Core;
 
 namespace ZeiControl
 {
     public partial class MainWindow : Window
     {
+        NetworkHandling nwHandler = new();
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void ConnectButtonClicked(object sender, RoutedEventArgs e)
+        private void ConnectButtonClick(object sender, RoutedEventArgs e)
         {
-
+            Task.Run(() => nwHandler.StartConnectionStream());
         }
 
-        private void DisconnectButtonClicked(object sender, RoutedEventArgs e)
+        private void DisconnectButtonClick(object sender, RoutedEventArgs e)
         {
-
+            nwHandler.StopConnectionStream();
         }
 
-        private void ExitButtonClicked(object sender, RoutedEventArgs e)
+        private void ExitButtonClick(object sender, RoutedEventArgs e)
         {
 
         }

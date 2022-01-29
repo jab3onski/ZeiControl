@@ -2,8 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ZeiControl"
-             StartupUri="MVVM/View/MainWindow.xaml">
+             xmlns:viewModel="clr-namespace:ZeiControl.MVVM.ViewModel"
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type viewModel:MainWindowViewModel}">
+                <local:MainWindow></local:MainWindow>
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
