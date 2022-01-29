@@ -52,7 +52,8 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,640,480"></RectangleGeometry>
                 </Border.Clip>
-                
+                <Image 
+                    Source="pack://application:,,,/Images/NoImage.png"/>
             </Border>
 
             <Border Margin="15" Width="660" Background="White" Grid.Row="1" Grid.Column="1">
