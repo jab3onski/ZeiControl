@@ -15,14 +15,26 @@ using System.Windows.Shapes;
 
 namespace ZeiControl
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ConnectButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DisconnectButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ExitButtonClicked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
