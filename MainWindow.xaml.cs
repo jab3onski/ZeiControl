@@ -25,6 +25,12 @@ namespace ZeiControl
             InitializeComponent();
         }
 
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            DragMove();
+        }
+
         private void ConnectButtonClick(object sender, RoutedEventArgs e)
         {
             Task.Run(() => nwHandler.StartConnectionStream());
@@ -37,7 +43,8 @@ namespace ZeiControl
 
         private void ExitButtonClick(object sender, RoutedEventArgs e)
         {
-
+            nwHandler.StopConnectionStream();
+            Close();
         }
     }
 }

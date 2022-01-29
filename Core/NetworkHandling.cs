@@ -18,8 +18,8 @@ namespace ZeiControl.Core
         private readonly IPEndPoint hostEndPoint = new(hostIP, 60555);
         private readonly List<byte[]> txMessageQueue = new();
 
-        private bool isConnected = false;
-        private bool isTransmittingImage = false;
+        private bool isConnected;
+        private bool isTransmittingImage;
         private int rxThreshold = 8;
 
         public void StartConnectionStream()
