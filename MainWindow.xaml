@@ -9,7 +9,15 @@
         ResizeMode="NoResize" WindowStyle="None"
         Background="Transparent" AllowsTransparency="True">
 
-    <Border Background="#28a3eb" CornerRadius="20">
+    <Border CornerRadius="20">
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1">
+                <GradientStop Color="#c5e3ff" Offset="0"></GradientStop>
+                <GradientStop Color="#95BBEE" Offset="0.7"></GradientStop>
+            </LinearGradientBrush>
+        </Border.Background>
+        
         <Grid>
             
             <Grid.ColumnDefinitions>
@@ -28,6 +36,7 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,645"></RectangleGeometry>
                 </Border.Clip>
+                
             </Border>
 
             <Border Margin="15" Width="345" Background="White" Grid.Row="1" Grid.Column="0">
@@ -59,6 +68,7 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,645"></RectangleGeometry>
                 </Border.Clip>
+                
             </Border>
 
             <Border Margin="15" Width="345" Background="White" Grid.Row="1" Grid.Column="2">
