@@ -17,7 +17,6 @@ namespace ZeiControl.Core
         private readonly IPEndPoint hostEndPoint = new(hostIP, 60555);
         public static List<byte[]> txMessageQueue = new();
         public static TcpClient tcpClient;
-        //byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
 
         private bool isConnected;
         private bool isTransmittingImage;
@@ -53,8 +52,8 @@ namespace ZeiControl.Core
             {
                 try
                 {
-                    //tcpClient.Client.Shutdown(SocketShutdown.Both);
-                    //tcpClient.Client.Close();
+                    tcpClient.Client.Shutdown(SocketShutdown.Both);
+                    tcpClient.Client.Close();
 
                     isConnected = false;
                 }
