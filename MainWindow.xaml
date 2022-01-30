@@ -53,8 +53,10 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,640,480"></RectangleGeometry>
                 </Border.Clip>
-                <Image 
-                    Source="pack://application:,,,/Images/NoImage.png"/>
+                <Canvas>
+                    <Image Source="pack://application:,,,/Images/NoImage.png"/>
+                    <ToggleButton Margin="10,10,0,0" Content="Enable"/>
+                </Canvas>
             </Border>
 
             <Border Margin="15" Width="660" Background="White" Grid.Row="1" Grid.Column="1">
@@ -72,10 +74,10 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <Button HorizontalAlignment="Right" Width="75" Height="50" Content="LEFT" Grid.Column="0" Grid.Row="1"/>
-                    <Button HorizontalAlignment="Left" Width="75" Height="50" Content="RIGHT" Grid.Column="2" Grid.Row="1"/>
-                    <Button Width="75" Height="50" Content="REVERSE" Grid.Column="1" Grid.Row="1"/>
-                    <Button Width="75" Height="50" Content="FORWARD" Grid.Column="1" Grid.Row="0"/>
+                    <Button HorizontalAlignment="Right" Width="75" Height="50" Content="LEFT" Grid.Column="0" Grid.Row="1" Click="LeftButtonClicked"/>
+                    <Button HorizontalAlignment="Left" Width="75" Height="50" Content="RIGHT" Grid.Column="2" Grid.Row="1" Click="RightButtonClicked"/>
+                    <Button Width="75" Height="50" Content="REVERSE" Grid.Column="1" Grid.Row="1" Click="ReverseButtonClicked"/>
+                    <Button Width="75" Height="50" Content="FORWARD" Grid.Column="1" Grid.Row="0" Click="ForwardButtonClicked"/>
                 </Grid>
             </Border>
 

@@ -16,7 +16,7 @@ namespace ZeiControl.Core
         public TcpClient tcpClient;
         private static readonly IPAddress hostIP = IPAddress.Parse("192.168.1.107");
         private readonly IPEndPoint hostEndPoint = new(hostIP, 60555);
-        private readonly List<byte[]> txMessageQueue = new();
+        public static List<byte[]> txMessageQueue = new();
 
         private bool isConnected;
         private bool isTransmittingImage;
@@ -24,9 +24,6 @@ namespace ZeiControl.Core
 
         public void StartConnectionStream()
         {
-
-            Trace.WriteLine("Hello world");
-
             tcpClient = new();
             tcpClient.ReceiveBufferSize = 131072; //128kb buffer (images go up to around 110kb)
             tcpClient.SendBufferSize = 2048;
@@ -75,8 +72,8 @@ namespace ZeiControl.Core
                         if (networkStream.CanWrite)
                         {
                             networkStream.Write(txMessageQueue[0], 0, 8);
-                            networkStream.Close();
                         }
+                        networkStream.Close();
                     }
                     catch (Exception exc)
                     {

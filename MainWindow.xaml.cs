@@ -46,5 +46,25 @@ namespace ZeiControl
             nwHandler.StopConnectionStream();
             Close();
         }
+
+        private void ForwardButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void LeftButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ReverseButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RightButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
