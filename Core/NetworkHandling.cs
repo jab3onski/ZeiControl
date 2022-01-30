@@ -13,10 +13,11 @@ namespace ZeiControl.Core
 {
     class NetworkHandling
     {
-        public TcpClient tcpClient;
         private static readonly IPAddress hostIP = IPAddress.Parse("192.168.1.107");
         private readonly IPEndPoint hostEndPoint = new(hostIP, 60555);
         public static List<byte[]> txMessageQueue = new();
+        public static TcpClient tcpClient;
+        //byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
 
         private bool isConnected;
         private bool isTransmittingImage;
@@ -24,56 +25,61 @@ namespace ZeiControl.Core
 
         public void StartConnectionStream()
         {
-            tcpClient = new();
-            tcpClient.ReceiveBufferSize = 131072; //128kb buffer (images go up to around 110kb)
-            tcpClient.SendBufferSize = 2048;
-
-            try
+            if (!isConnected)
             {
-                tcpClient.Connect(hostEndPoint);
+                try
+                {
+                    tcpClient = new();
+                    tcpClient.ReceiveBufferSize = 131072; //128kb buffer (images go up to around 110kb)
+                    tcpClient.SendBufferSize = 2048;
+                    tcpClient.Connect(hostEndPoint);
+                    isConnected = true;
 
-                _ = SendMessageTask();
-                _ = ReceiveMessageTask();
-
-                isConnected = true;
-            }
-            catch (Exception exc)
-            {
-                Trace.WriteLine("Internal error: ");
-                Trace.WriteLine(exc.Message);
+                    _ = SendMessageTask();
+                    _ = ReceiveMessageTask();
+                }
+                catch (Exception exc)
+                {
+                    Trace.WriteLine("Internal error: ");
+                    Trace.WriteLine(exc.Message);
+                    isConnected = false;
+                }
             }
         }
 
         public void StopConnectionStream()
         {
-            try
+            if(isConnected)
             {
-                tcpClient.Client.Shutdown(SocketShutdown.Both);
-                tcpClient.Client.Close();
+                try
+                {
+                    //tcpClient.Client.Shutdown(SocketShutdown.Both);
+                    //tcpClient.Client.Close();
 
-                isConnected = false;
-            }
-            catch (Exception exc)
-            {
-                Trace.WriteLine("Internal error: ");
-                Trace.WriteLine(exc.Message);
+                    isConnected = false;
+                }
+                catch (Exception exc)
+                {
+                    Trace.WriteLine("Internal error: ");
+                    Trace.WriteLine(exc.Message);
+                    isConnected = false;
+                }
             }
         }
 
         private async Task SendMessageTask()
         {
+            NetworkStream networkStream = tcpClient.GetStream();
             while (isConnected)
             {
                 if (txMessageQueue.Count > 0)
                 {
                     try
                     {
-                        NetworkStream networkStream = tcpClient.GetStream();
                         if (networkStream.CanWrite)
                         {
-                            networkStream.Write(txMessageQueue[0], 0, 8);
+                            networkStream.Write(txMessageQueue[0]);
                         }
-                        networkStream.Close();
                     }
                     catch (Exception exc)
                     {
@@ -82,12 +88,13 @@ namespace ZeiControl.Core
                     }
                     finally
                     {
+                        Trace.WriteLine("Message sent");
                         txMessageQueue.RemoveAt(0);
                     }
                 }
-
                 await Task.Delay(20);
             }
+            networkStream.Close();
         }
 
         private async Task ReceiveMessageTask()
@@ -112,8 +119,8 @@ namespace ZeiControl.Core
                         Trace.WriteLine(exc.Message);
                     }
                 }
+                await Task.Delay(20);
             }
-            await Task.Delay(20);
         }
 
         private void OnDataReceived(byte[] data)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +20,7 @@ namespace ZeiControl
     public partial class MainWindow : Window
     {
         NetworkHandling nwHandler = new();
+        MessagingProtocol messagingProtocol = new();
 
         public MainWindow()
         {
@@ -33,7 +35,7 @@ namespace ZeiControl
 
         private void ConnectButtonClick(object sender, RoutedEventArgs e)
         {
-            Task.Run(() => nwHandler.StartConnectionStream());
+            nwHandler.StartConnectionStream();
         }
 
         private void DisconnectButtonClick(object sender, RoutedEventArgs e)
@@ -49,7 +51,8 @@ namespace ZeiControl
 
         private void ForwardButtonClicked(object sender, RoutedEventArgs e)
         {
-
+            byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
+            messagingProtocol.ProcessOutgoingData(bytePacket);
         }
 
         private void LeftButtonClicked(object sender, RoutedEventArgs e)
