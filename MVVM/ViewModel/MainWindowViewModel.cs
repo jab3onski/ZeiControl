@@ -14,10 +14,26 @@ namespace ZeiControl.MVVM.ViewModel
 {
     internal class MainWindowViewModel : ObservableObject
     {
-        
+
+        public BitmapImage DefaultStreamImage { get; set; }
+
+        private object _streamSource;
+
+        public object StreamSource
+        {
+            get { return _streamSource; }
+            set
+            {
+                _streamSource = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public MainWindowViewModel()
         {
-            
+            DefaultStreamImage = new BitmapImage(new Uri("pack://application:,,,/Images/NoImage.png"));
+            StreamSource = DefaultStreamImage;
         }
     }
 }

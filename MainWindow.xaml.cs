@@ -19,11 +19,7 @@ namespace ZeiControl
 {
     public partial class MainWindow : Window
     {
-        NetworkHandling nwHandler = new();
-        MessagingProtocol messagingProtocol = new();
-
-        //Protocol message to stop driving in current direction
-        byte[] stopPacket = { 0x23, 0x4D, 0x5F, 0xFF, 0xFF, 0xFF, 0xFF, 0x23 };
+        readonly NetworkHandling nwHandler = new();
 
         public MainWindow()
         {
@@ -58,55 +54,68 @@ namespace ZeiControl
         private void MouseOnLeftButtonPressed(object sender, MouseButtonEventArgs e)
         {
             byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0x00, 0xFF, 0x00, 0x00, 0x23 };
-            messagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(bytePacket);
         }
 
         private void MouseOnLeftButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            messagingProtocol.ProcessOutgoingData(stopPacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
         }
 
         //Drive reverse mouse button handling
         private void MouseOnReverseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0x00, 0x00, 0x00, 0xFF, 0x23 };
-            messagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(bytePacket);
         }
 
         private void MouseOnReverseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            messagingProtocol.ProcessOutgoingData(stopPacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
         }
 
         //Drive right mouse button handling
         private void MouseOnRightButtonPressed(object sender, MouseButtonEventArgs e)
         {
             byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0x00, 0x00, 0xFF, 0x00, 0x23 };
-            messagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(bytePacket);
         }
 
         private void MouseOnRightButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            messagingProtocol.ProcessOutgoingData(stopPacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
         }
 
         //Drive forward mouse button handling
         private void MouseOnForwardButtonPressed(object sender, MouseButtonEventArgs e)
         {
             byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
-            messagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(bytePacket);
         }
 
         private void MouseOnForwardButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            messagingProtocol.ProcessOutgoingData(stopPacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
         }
 
-        //Drive full stop (relays closed)
+        //Full stop (relays closed)
         private void StopButtonClicked(object sender, RoutedEventArgs e)
         {
             byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
-            messagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(bytePacket);
+        }
+
+        //Camera enabled / disabled
+        private void CameraEnableChecked(object sender, RoutedEventArgs e)
+        {
+            byte[] bytePacket = { 0x23, 0x43, 0x5F, 0xFF, 0xFF, 0xFF, 0xFF, 0x23 };
+            MessagingProtocol.ProcessOutgoingData(bytePacket);
+        }
+
+        private void CameraEnableUnchecked(object sender, RoutedEventArgs e)
+        {
+            byte[] bytePacket = { 0x23, 0x43, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
+            MessagingProtocol.ProcessOutgoingData(bytePacket);
         }
     }
 }

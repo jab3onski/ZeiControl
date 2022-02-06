@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -19,8 +20,9 @@ namespace ZeiControl.Core
         public static TcpClient tcpClient;
 
         private bool isConnected;
-        private bool isTransmittingImage;
-        private int rxThreshold = 8;
+        public static int rxThreshold = 8;
+
+        private readonly MessagingProtocol messagingProtocol = new();
 
         public void StartConnectionStream()
         {
@@ -30,7 +32,7 @@ namespace ZeiControl.Core
                 {
                     tcpClient = new();
                     tcpClient.ReceiveBufferSize = 131072; //128kb buffer (images go up to around 110kb)
-                    tcpClient.SendBufferSize = 2048;
+                    tcpClient.SendBufferSize = 128;
                     tcpClient.Connect(hostEndPoint);
                     isConnected = true;
 
@@ -52,6 +54,9 @@ namespace ZeiControl.Core
             {
                 try
                 {
+                    txMessageQueue.Add(MessagingProtocol.stopPacket);
+                    txMessageQueue.Add(MessagingProtocol.cameraDisablePacket);
+
                     tcpClient.Client.Shutdown(SocketShutdown.Both);
                     tcpClient.Client.Close();
 
@@ -87,7 +92,6 @@ namespace ZeiControl.Core
                     }
                     finally
                     {
-                        Trace.WriteLine("Message sent");
                         txMessageQueue.RemoveAt(0);
                     }
                 }
@@ -124,31 +128,7 @@ namespace ZeiControl.Core
 
         private void OnDataReceived(byte[] data)
         {
-            ProcessIncomingData(data);
+            messagingProtocol.ProcessIncomingData(data);
         }
-
-        private void ProcessIncomingData(byte[] data)
-        {
-            if (data[0] == 0x23 && data[7] == 0x23)
-            {
-                if (data[1] == 0x50)
-                {
-                    byte[] sizeData = { data[3], data[4], data[5], data[6] };
-                    int jpegSize = BitConverter.ToInt32(sizeData);
-                    isTransmittingImage = true;
-                    rxThreshold = jpegSize;
-                }
-            }
-            else if (isTransmittingImage)
-            {
-                if (data[0] == 0xFF && data[1] == 0xD8)
-                {
-                    BitmapSource bitmapSource = (BitmapSource)new ImageSourceConverter().ConvertFrom(data);
-                    isTransmittingImage = false;
-                    rxThreshold = 8;
-                }
-            }
-        }
-
     }
 }
