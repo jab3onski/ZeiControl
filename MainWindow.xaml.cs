@@ -21,9 +21,13 @@ namespace ZeiControl
     {
         readonly NetworkHandling nwHandler = new();
 
+        public static Image StreamSourceFrame { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+
+            StreamSourceFrame = CameraFrameImage;
         }
 
         //Move window override

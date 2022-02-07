@@ -38,8 +38,11 @@ namespace ZeiControl.Core
             {
                 if (data[0] == 0xFF && data[1] == 0xD8)
                 {
-                    BitmapSource bitmapSource = (BitmapSource)new ImageSourceConverter().ConvertFrom(data);
                     isTransmittingImage = false;
+
+                    //Update image object to received frame
+                    MainWindow.StreamSourceFrame.Source = (BitmapSource)new ImageSourceConverter().ConvertFrom(data);
+
                     NetworkHandling.rxThreshold = 8;
                 }
             }

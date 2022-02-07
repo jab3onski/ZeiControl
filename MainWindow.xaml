@@ -4,17 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZeiControl"
-        xmlns:viewmodel="clr-namespace:ZeiControl.MVVM.ViewModel" 
-        d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="900" Width="1440"
         ResizeMode="NoResize" WindowStyle="None"
         Background="Transparent" AllowsTransparency="True">
 
-    <Window.DataContext>
-        <viewmodel:MainWindowViewModel/>
-    </Window.DataContext>
-    
     <Border CornerRadius="20">
 
         <Border.Background>
@@ -59,7 +53,7 @@
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,640,480"></RectangleGeometry>
                 </Border.Clip>
                 <Canvas>
-                    <Image x:Name="CameraImage" Source="{Binding StreamSource}"/>
+                    <Image x:Name="CameraFrameImage" Source="pack://application:,,,/Images/NoImage.png"/>
                     <ToggleButton Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
                 </Canvas>
             </Border>
