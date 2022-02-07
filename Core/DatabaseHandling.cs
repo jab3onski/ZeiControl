@@ -14,7 +14,7 @@ namespace ZeiControl.Core
         {
             SQLiteConnection sqlite_conn;
             sqlite_conn =
-                new("Data Source=./Core/database.db;Version=3");
+                new("Data Source=./Core/database.db");
             try
             {
                 sqlite_conn.Open();

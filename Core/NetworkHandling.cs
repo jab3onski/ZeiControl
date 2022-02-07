@@ -19,7 +19,7 @@ namespace ZeiControl.Core
         public static List<byte[]> txMessageQueue = new();
         public static TcpClient tcpClient;
 
-        private bool isConnected;
+        public static bool isConnected;
         public static int rxThreshold = 8;
 
         private readonly MessagingProtocol messagingProtocol = new();

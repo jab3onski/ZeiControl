@@ -67,7 +67,10 @@ namespace ZeiControl.Core
 
         public static void ProcessOutgoingData(byte[] data)
         {
-            NetworkHandling.txMessageQueue.Add(data);
+            if(NetworkHandling.isConnected)
+            {
+                NetworkHandling.txMessageQueue.Add(data);
+            }
         }
     }
 }

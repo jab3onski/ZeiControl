@@ -37,13 +37,13 @@
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,645"></RectangleGeometry>
                 </Border.Clip>
 
-                <ListView x:Name="DatabaseItemsList">
+                <ListView x:Name="DatabaseItemsList" Margin="10">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="40"  Header="Id" DisplayMemberBinding="{Binding Id}"/>
                             <GridViewColumn Width="90" Header="Sensor Type" DisplayMemberBinding="{Binding SensorType}"/>
                             <GridViewColumn Width="40" Header="Value" DisplayMemberBinding="{Binding SensorValue}"/>
-                            <GridViewColumn Width="175" Header="Captured" DisplayMemberBinding="{Binding DateTimeValue}"/>
+                            <GridViewColumn Width="150" Header="Captured" DisplayMemberBinding="{Binding DateTimeValue}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -66,6 +66,15 @@
                 <Canvas>
                     <Image x:Name="CameraFrameImage" Source="pack://application:,,,/Images/NoImage.png"/>
                     <ToggleButton Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
+                    <Slider Minimum="-90" Maximum="90" Canvas.Bottom="10" Canvas.Right="30" Width="200"/>
+                    <Slider Orientation="Vertical" Minimum="-90" Maximum="90" Canvas.Bottom="30" Canvas.Right="10" Height="200"/>
+                    <Label Content="X-axis" Canvas.Bottom="25" Canvas.Right="109"/>
+                    <Label Content="Y-axis" Canvas.Bottom="109" Canvas.Right="25">
+                        <Label.LayoutTransform>
+                            <RotateTransform Angle="270"/>
+                        </Label.LayoutTransform>
+                    </Label>
+                    <Button Content="0" Height="20" Width="20" Canvas.Left="610" Canvas.Top="450"/>
                 </Canvas>
             </Border>
 
