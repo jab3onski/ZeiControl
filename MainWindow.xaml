@@ -66,8 +66,33 @@
                 <Canvas>
                     <Image x:Name="CameraFrameImage" Source="pack://application:,,,/Images/NoImage.png"/>
                     <ToggleButton Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
-                    <Slider Minimum="-90" Maximum="90" Canvas.Bottom="10" Canvas.Right="30" Width="200"/>
-                    <Slider Orientation="Vertical" Minimum="-90" Maximum="90" Canvas.Bottom="30" Canvas.Right="10" Height="200"/>
+                    <Slider 
+                        x:Name="SliderXAxis" 
+                        Minimum="-90" 
+                        Maximum="90" 
+                        Canvas.Bottom="10" 
+                        Canvas.Right="30" 
+                        Width="200" 
+                        ValueChanged="SliderXAxis_ValueChanged" 
+                        Thumb.DragStarted="SliderXAxis_DragStarted" 
+                        Thumb.DragCompleted="SliderXAxis_DragCompleted" 
+                        SmallChange="10" 
+                        IsSnapToTickEnabled="True" 
+                        TickFrequency="1"/>
+                    <Slider 
+                        x:Name="SliderYAxis" 
+                        Orientation="Vertical" 
+                        Minimum="-90" 
+                        Maximum="90" 
+                        Canvas.Bottom="30" 
+                        Canvas.Right="10" 
+                        Height="200"
+                        ValueChanged="SliderYAxis_ValueChanged"
+                        Thumb.DragStarted="SliderYAxis_DragStarted"
+                        Thumb.DragCompleted="SliderYAxis_DragCompleted"
+                        SmallChange="10"
+                        IsSnapToTickEnabled="True"
+                        TickFrequency="1"/>
                     <Label Content="X-axis" Canvas.Bottom="25" Canvas.Right="109"/>
                     <Label Content="Y-axis" Canvas.Bottom="109" Canvas.Right="25">
                         <Label.LayoutTransform>

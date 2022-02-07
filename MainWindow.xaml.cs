@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -21,12 +22,18 @@ namespace ZeiControl
     {
         readonly NetworkHandling nwHandler = new();
 
+        private bool XsliderDragStarted;
+        private bool YsliderDragStarted;
+
         public static Image StreamSourceFrame { get; set; }
         public static ListView DbListView { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            XsliderDragStarted = false;
+            YsliderDragStarted = false;
 
             StreamSourceFrame = CameraFrameImage;
             DbListView = DatabaseItemsList;
@@ -122,6 +129,57 @@ namespace ZeiControl
         {
             byte[] bytePacket = { 0x23, 0x43, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
             MessagingProtocol.ProcessOutgoingData(bytePacket);
+        }
+
+
+        //Handle X-axis slider drag event
+        private void SliderXAxis_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            XsliderDragStarted = true;
+        }
+
+        private void SliderXAxis_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(
+                HelperMethods.TransformAsBytePacket(
+                    HelperMethods.RescaleToAnalogValue(((Slider)sender).Value), 0x58));
+
+            XsliderDragStarted = false;
+        }
+
+        private void SliderXAxis_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (!XsliderDragStarted)
+            {
+                MessagingProtocol.ProcessOutgoingData(
+                HelperMethods.TransformAsBytePacket(
+                    HelperMethods.RescaleToAnalogValue(((Slider)sender).Value), 0x58));
+            }
+        }
+
+        //Handle Y-axis slider drag event
+        private void SliderYAxis_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            YsliderDragStarted = true;
+        }
+
+        private void SliderYAxis_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(
+                HelperMethods.TransformAsBytePacket(
+                    HelperMethods.RescaleToAnalogValue(((Slider)sender).Value), 0x59));
+
+            YsliderDragStarted = false;
+        }
+
+        private void SliderYAxis_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (!YsliderDragStarted)
+            {
+                MessagingProtocol.ProcessOutgoingData(
+                    HelperMethods.TransformAsBytePacket(
+                        HelperMethods.RescaleToAnalogValue(((Slider)sender).Value), 0x59));
+            }
         }
     }
 }
