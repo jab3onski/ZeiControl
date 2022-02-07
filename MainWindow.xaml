@@ -36,6 +36,10 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,645"></RectangleGeometry>
                 </Border.Clip>
+
+                <ListView x:Name="DatabaseItemsList">
+                    
+                </ListView>
                 
             </Border>
 

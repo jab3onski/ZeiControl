@@ -7,11 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Core\database.db" />
     <None Remove="Images\NoImage.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Core\database.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Themes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
   </ItemGroup>
 
   <ItemGroup>

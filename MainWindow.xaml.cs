@@ -22,12 +22,14 @@ namespace ZeiControl
         readonly NetworkHandling nwHandler = new();
 
         public static Image StreamSourceFrame { get; set; }
+        public static ListView DbListView { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
 
             StreamSourceFrame = CameraFrameImage;
+            DbListView = DatabaseItemsList;
         }
 
         //Move window override
