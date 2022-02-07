@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,22 @@ namespace ZeiControl.Core
                 {
                     byte[] sizeData = { data[3], data[4], data[5], data[6] };
                     int jpegSize = BitConverter.ToInt32(sizeData);
+
+                    //send datasize to database and add to DatabaseListView
+                    SQLiteConnection connection = DatabaseHandling.CreateConnection();
+                    try
+                    {
+                        DatabaseHandling.AddSensorEntryToTemp(connection, "TestData", jpegSize);
+
+                        _ = MainWindow.DbListView.Items.Add(
+                            new SensorData { Id = 1, SensorType = "Test", SensorValue = jpegSize, DateTimeValue = DateTime.Now });
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(ex.Message);
+                    }
+                    connection.Close();
+
                     isTransmittingImage = true;
                     NetworkHandling.rxThreshold = jpegSize;
                 }

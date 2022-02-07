@@ -38,7 +38,14 @@
                 </Border.Clip>
 
                 <ListView x:Name="DatabaseItemsList">
-                    
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="40"  Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                            <GridViewColumn Width="90" Header="Sensor Type" DisplayMemberBinding="{Binding SensorType}"/>
+                            <GridViewColumn Width="40" Header="Value" DisplayMemberBinding="{Binding SensorValue}"/>
+                            <GridViewColumn Width="175" Header="Captured" DisplayMemberBinding="{Binding DateTimeValue}"/>
+                        </GridView>
+                    </ListView.View>
                 </ListView>
                 
             </Border>
