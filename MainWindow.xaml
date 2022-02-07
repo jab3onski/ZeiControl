@@ -5,8 +5,118 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZeiControl"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="900" Width="1440"
+        ResizeMode="NoResize" WindowStyle="None"
+        Background="Transparent" AllowsTransparency="True">
 
-    </Grid>
+    <Border CornerRadius="20">
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1">
+                <GradientStop Color="#C5E3FF" Offset="0"></GradientStop>
+                <GradientStop Color="#95BBEE" Offset="0.7"></GradientStop>
+            </LinearGradientBrush>
+        </Border.Background>
+        
+        <Grid>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="375"></ColumnDefinition>
+                <ColumnDefinition Width="690"></ColumnDefinition>
+                <ColumnDefinition Width="375"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="675" ></RowDefinition>
+                <RowDefinition Height="225"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!--Column 1-->
+
+            <Border Margin="15" Width="345" Background="White" Grid.Row="0" Grid.Column="0">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,645"></RectangleGeometry>
+                </Border.Clip>
+                
+            </Border>
+
+            <Border Margin="15" Width="345" Background="White" Grid.Row="1" Grid.Column="0">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,195"></RectangleGeometry>
+                </Border.Clip>
+                
+            </Border>
+            
+            <!--Column 2-->
+
+            <Border Margin="15" Width="640" Height="480" Background="White" Grid.Row="0" Grid.Column="1">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,640,480"></RectangleGeometry>
+                </Border.Clip>
+                <Canvas>
+                    <Image x:Name="CameraFrameImage" Source="pack://application:,,,/Images/NoImage.png"/>
+                    <ToggleButton Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
+                </Canvas>
+            </Border>
+
+            <Border Margin="15" Width="660" Background="White" Grid.Row="1" Grid.Column="1">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,660,195"></RectangleGeometry>
+                </Border.Clip>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button HorizontalAlignment="Left" Content="STOP" Margin="10" Height="50" Click="StopButtonClicked" />
+                    <Button HorizontalAlignment="Right" Width="75" Height="50" Content="LEFT" Grid.Column="0" Grid.Row="1" PreviewMouseLeftButtonDown="MouseOnLeftButtonPressed" PreviewMouseLeftButtonUp="MouseOnLeftButtonReleased"/>
+                    <Button HorizontalAlignment="Left" Width="75" Height="50" Content="RIGHT" Grid.Column="2" Grid.Row="1" PreviewMouseLeftButtonDown="MouseOnRightButtonPressed" PreviewMouseLeftButtonUp="MouseOnRightButtonReleased"/>
+                    <Button Width="75" Height="50" Content="REVERSE" Grid.Column="1" Grid.Row="1" PreviewMouseLeftButtonDown="MouseOnReverseButtonPressed" PreviewMouseLeftButtonUp="MouseOnReverseButtonReleased"/>
+                    <Button Width="75" Height="50" Content="FORWARD" Grid.Column="1" Grid.Row="0" PreviewMouseLeftButtonDown="MouseOnForwardButtonPressed" PreviewMouseLeftButtonUp="MouseOnForwardButtonReleased"/>
+                </Grid>
+            </Border>
+
+            <!--Column 3-->
+
+            <Border Margin="15" Width="345" Background="White" Grid.Row="0" Grid.Column="2">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,645"></RectangleGeometry>
+                </Border.Clip>
+                
+            </Border>
+
+            <Border Margin="15" Width="345" Background="White" Grid.Row="1" Grid.Column="2">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,195"></RectangleGeometry>
+                </Border.Clip>
+
+                <StackPanel Orientation="Vertical">
+                    <TextBlock
+                        Text="ZeiControl"
+                        HorizontalAlignment="Center"
+                        FontSize="28"
+                        Margin="0,10,0,0"/>
+                    <Button
+                        Width="100"
+                        Content="Connect"
+                        Margin="0,20,0,0" Click="ConnectButtonClick"/>
+                    <Button 
+                        Width="100"
+                        Content="Disconnect"
+                        Margin="0,20,0,0" Click="DisconnectButtonClick"/>
+                    <Button 
+                        Width="100"
+                        Content="Exit"
+                        Margin="0,20,0,0" Click="ExitButtonClick"/>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+    </Border>
+
 </Window>
