@@ -59,7 +59,7 @@
                 </Border.Clip>
 
                 <StackPanel Orientation="Vertical">
-                    <Label Content="Database settings" HorizontalAlignment="Center" FontSize="20" Margin="0,10,0,10"/>
+                    <Label Content="Database options" HorizontalAlignment="Center" FontSize="20" Margin="0,10,0,10"/>
                     <Button Content="Save data" Width="175" Margin="5"/>
                     <Button Content="Clear session data" Width="175" Margin="5"/>
                     <Button Content="Change sensor settings" Width="175" Margin="5"/>
@@ -118,23 +118,58 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,660,195"></RectangleGeometry>
                 </Border.Clip>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
 
-                    <ToggleButton x:Name="EmergencyStopButton" HorizontalAlignment="Left" Content="STOP" Margin="10" Height="50" Checked="EmergencyStopButton_Checked" Unchecked="EmergencyStopButton_Unchecked" />
-                    <Button HorizontalAlignment="Right" Width="75" Height="50" Content="LEFT" Grid.Column="0" Grid.Row="1" PreviewMouseLeftButtonDown="MouseOnLeftButtonPressed" PreviewMouseLeftButtonUp="MouseOnLeftButtonReleased"/>
-                    <Button HorizontalAlignment="Left" Width="75" Height="50" Content="RIGHT" Grid.Column="2" Grid.Row="1" PreviewMouseLeftButtonDown="MouseOnRightButtonPressed" PreviewMouseLeftButtonUp="MouseOnRightButtonReleased"/>
-                    <Button Width="75" Height="50" Content="REVERSE" Grid.Column="1" Grid.Row="1" PreviewMouseLeftButtonDown="MouseOnReverseButtonPressed" PreviewMouseLeftButtonUp="MouseOnReverseButtonReleased"/>
-                    <Button Width="75" Height="50" Content="FORWARD" Grid.Column="1" Grid.Row="0" PreviewMouseLeftButtonDown="MouseOnForwardButtonPressed" PreviewMouseLeftButtonUp="MouseOnForwardButtonReleased"/>
-                </Grid>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Width="130" Margin="10" HorizontalAlignment="Left" Orientation="Vertical">
+                        <Label FontWeight="Bold" HorizontalAlignment="Center" Content="Proximity Sensors"/>
+                        <StackPanel Margin="0,10,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                            <Label HorizontalAlignment="Center" Content="Front Proximity Sensor"/>
+                            <TextBlock HorizontalAlignment="Center" Text="---"/>
+                            <Label HorizontalAlignment="Center" Content="Left Proximity Sensor"/>
+                            <TextBlock HorizontalAlignment="Center" Text="---"/>
+                            <Label HorizontalAlignment="Center" Content="Right Proximity Sensor"/>
+                            <TextBlock HorizontalAlignment="Center" Text="---"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid Margin="10" Width="350" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Button Margin="5" Content="&#x2190;" Grid.Column="1" Grid.Row="1"/>
+                        <Button Margin="5" Content="&#x2191;" Grid.Column="2" Grid.Row="0"/>
+                        <Button Margin="5" Content="&#x2192;" Grid.Column="3" Grid.Row="1"/>
+                        <Button Margin="5" Content="&#x2193;" Grid.Column="2" Grid.Row="1"/>
+                        <Button Margin="5" Content="&#x2199;" Grid.Column="1" Grid.Row="2"/>
+                        <Button Margin="5" Content="&#x2198;" Grid.Column="3" Grid.Row="2"/>
+
+                        <ToggleButton Margin="5" Content="PLED" Grid.Column="1" Grid.Row="0"/>
+                        <ToggleButton Margin="5" Content="Lights" Grid.Column="3" Grid.Row="0"/>
+                        <ToggleButton Margin="5" Content="Stop" Grid.Column="0" Grid.Row="2"/>
+                        <ToggleButton Margin="5" Content="Buzzer" Grid.Column="2" Grid.Row="2"/>
+                        <ToggleButton Margin="5" Content="Laser" Grid.Column="4" Grid.Row="2"/>
+                    </Grid>
+                    <StackPanel Width="130" Margin="10" HorizontalAlignment="Right" Orientation="Vertical">
+                        <Label FontWeight="Bold" HorizontalAlignment="Center" Content="Signal Status"/>
+                        <StackPanel Margin="0,10,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                            <Label HorizontalAlignment="Center" Content="RRSI"/>
+                            <TextBlock HorizontalAlignment="Center" Text="---"/>
+                            <Label HorizontalAlignment="Center" Content="Connection Time"/>
+                            <TextBlock HorizontalAlignment="Center" Text="---"/>
+                            <Label HorizontalAlignment="Center" Content="Watchdog Response"/>
+                            <TextBlock HorizontalAlignment="Center" Text="---"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
             </Border>
 
             <!--Column 3-->
@@ -143,7 +178,17 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,645"></RectangleGeometry>
                 </Border.Clip>
-                
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Notifications" HorizontalAlignment="Center" FontSize="20" Margin="0,10,0,0"/>
+                    <ListView Height="575" x:Name="NotificationItemsList" Margin="10">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="90" Header="Severity"/>
+                                <GridViewColumn Width="230" Header="Message"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
             </Border>
 
             <Border Margin="15" Width="345" Background="White" Grid.Row="1" Grid.Column="2">

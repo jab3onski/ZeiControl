@@ -63,60 +63,6 @@ namespace ZeiControl
             Close();
         }
 
-        //Drive left mouse button handling
-        private void MouseOnLeftButtonPressed(object sender, MouseButtonEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.leftPacket);
-        }
-
-        private void MouseOnLeftButtonReleased(object sender, MouseButtonEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
-        }
-
-        //Drive reverse mouse button handling
-        private void MouseOnReverseButtonPressed(object sender, MouseButtonEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.reversePacket);
-        }
-
-        private void MouseOnReverseButtonReleased(object sender, MouseButtonEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
-        }
-
-        //Drive right mouse button handling
-        private void MouseOnRightButtonPressed(object sender, MouseButtonEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.rightPacket);
-        }
-
-        private void MouseOnRightButtonReleased(object sender, MouseButtonEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
-        }
-
-        //Drive forward mouse button handling
-        private void MouseOnForwardButtonPressed(object sender, MouseButtonEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.forwardPacket);
-        }
-
-        private void MouseOnForwardButtonReleased(object sender, MouseButtonEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
-        }
-
-        //Full stop (relays closed)
-        private void EmergencyStopButton_Checked(object sender, RoutedEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.emergencyStopPacket);
-        }
-
-        private void EmergencyStopButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.emergencyOverPacket);
-        }
 
         //Camera enabled / disabled
         private void CameraEnableChecked(object sender, RoutedEventArgs e)
