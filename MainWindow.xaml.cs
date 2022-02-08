@@ -66,8 +66,7 @@ namespace ZeiControl
         //Drive left mouse button handling
         private void MouseOnLeftButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0x00, 0xFF, 0x00, 0x00, 0x23 };
-            MessagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.leftPacket);
         }
 
         private void MouseOnLeftButtonReleased(object sender, MouseButtonEventArgs e)
@@ -78,8 +77,7 @@ namespace ZeiControl
         //Drive reverse mouse button handling
         private void MouseOnReverseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0x00, 0x00, 0x00, 0xFF, 0x23 };
-            MessagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.reversePacket);
         }
 
         private void MouseOnReverseButtonReleased(object sender, MouseButtonEventArgs e)
@@ -90,8 +88,7 @@ namespace ZeiControl
         //Drive right mouse button handling
         private void MouseOnRightButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0x00, 0x00, 0xFF, 0x00, 0x23 };
-            MessagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.rightPacket);
         }
 
         private void MouseOnRightButtonReleased(object sender, MouseButtonEventArgs e)
@@ -102,8 +99,7 @@ namespace ZeiControl
         //Drive forward mouse button handling
         private void MouseOnForwardButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
-            MessagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.forwardPacket);
         }
 
         private void MouseOnForwardButtonReleased(object sender, MouseButtonEventArgs e)
@@ -112,23 +108,25 @@ namespace ZeiControl
         }
 
         //Full stop (relays closed)
-        private void StopButtonClicked(object sender, RoutedEventArgs e)
+        private void EmergencyStopButton_Checked(object sender, RoutedEventArgs e)
         {
-            byte[] bytePacket = { 0x23, 0x4D, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
-            MessagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.emergencyStopPacket);
+        }
+
+        private void EmergencyStopButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.emergencyOverPacket);
         }
 
         //Camera enabled / disabled
         private void CameraEnableChecked(object sender, RoutedEventArgs e)
         {
-            byte[] bytePacket = { 0x23, 0x43, 0x5F, 0xFF, 0xFF, 0xFF, 0xFF, 0x23 };
-            MessagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.cameraEnablePacket);
         }
 
         private void CameraEnableUnchecked(object sender, RoutedEventArgs e)
         {
-            byte[] bytePacket = { 0x23, 0x43, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
-            MessagingProtocol.ProcessOutgoingData(bytePacket);
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.cameraDisablePacket);
         }
 
 
