@@ -138,7 +138,7 @@ namespace ZeiControl
 
         private void ForwardButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.forwardPacket)
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.forwardPacket);
         }
 
         private void ForwardButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
