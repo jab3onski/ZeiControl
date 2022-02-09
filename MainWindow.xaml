@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZeiControl"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1440"
+        Title="ZeiControl" Height="900" Width="1440"
         ResizeMode="NoResize" WindowStyle="None"
         Background="Transparent" AllowsTransparency="True">
 
@@ -63,7 +63,7 @@
                     <Button Content="Save data" Width="175" Margin="5"/>
                     <Button Content="Clear session data" Width="175" Margin="5"/>
                     <Button Content="Change sensor settings" Width="175" Margin="5"/>
-                    <Button Content="Database browser" Width="175" Margin="5"/>
+                    <Button x:Name="DatabaseBrowserButton" Content="Database browser" Width="175" Margin="5" Click="DatabaseBrowserButton_Click"/>
                 </StackPanel>
 
             </Border>
@@ -145,18 +145,18 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <Button Margin="5" Content="&#x2190;" Grid.Column="1" Grid.Row="1"/>
-                        <Button Margin="5" Content="&#x2191;" Grid.Column="2" Grid.Row="0"/>
-                        <Button Margin="5" Content="&#x2192;" Grid.Column="3" Grid.Row="1"/>
-                        <Button Margin="5" Content="&#x2193;" Grid.Column="2" Grid.Row="1"/>
-                        <Button Margin="5" Content="&#x2199;" Grid.Column="1" Grid.Row="2"/>
-                        <Button Margin="5" Content="&#x2198;" Grid.Column="3" Grid.Row="2"/>
+                        <Button x:Name="LeftButton" Margin="5" Content="&#x2190;" Grid.Column="1" Grid.Row="1" PreviewMouseLeftButtonDown="LeftButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="LeftButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="ForwardButton" Margin="5" Content="&#x2191;" Grid.Column="2" Grid.Row="0" PreviewMouseLeftButtonDown="ForwardButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ForwardButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="RightButton" Margin="5" Content="&#x2192;" Grid.Column="3" Grid.Row="1" PreviewMouseLeftButtonDown="RightButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="RightButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="ReverseButton" Margin="5" Content="&#x2193;" Grid.Column="2" Grid.Row="1" PreviewMouseLeftButtonDown="ReverseButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="ReverseLeftButton" Margin="5" Content="&#x2199;" Grid.Column="1" Grid.Row="2" PreviewMouseLeftButtonDown="ReverseLeftButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseLeftButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="ReverseRightButton" Margin="5" Content="&#x2198;" Grid.Column="3" Grid.Row="2" PreviewMouseLeftButtonDown="ReverseRightButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseRightButton_PreviewMouseLeftButtonUp"/>
 
-                        <ToggleButton Margin="5" Content="PLED" Grid.Column="1" Grid.Row="0"/>
-                        <ToggleButton Margin="5" Content="Lights" Grid.Column="3" Grid.Row="0"/>
-                        <ToggleButton Margin="5" Content="Stop" Grid.Column="0" Grid.Row="2"/>
-                        <ToggleButton Margin="5" Content="Buzzer" Grid.Column="2" Grid.Row="2"/>
-                        <ToggleButton Margin="5" Content="Laser" Grid.Column="4" Grid.Row="2"/>
+                        <ToggleButton x:Name="PowerLEDButton" Margin="5" Content="PLED" Grid.Column="1" Grid.Row="0" Checked="PowerLEDButton_Checked" Unchecked="PowerLEDButton_Unchecked"/>
+                        <ToggleButton x:Name="smallLEDButton" Margin="5" Content="Lights" Grid.Column="3" Grid.Row="0" Checked="smallLEDButton_Checked" Unchecked="smallLEDButton_Unchecked"/>
+                        <ToggleButton x:Name="FullStopButton" Margin="5" Content="Stop" Grid.Column="0" Grid.Row="2" Checked="FullStopButton_Checked" Unchecked="FullStopButton_Unchecked"/>
+                        <ToggleButton x:Name="BuzzerButton" Margin="5" Content="Buzzer" Grid.Column="2" Grid.Row="2" Checked="BuzzerButton_Checked" Unchecked="BuzzerButton_Unchecked"/>
+                        <ToggleButton x:Name="LaserButton" Margin="5" Content="Laser" Grid.Column="4" Grid.Row="2" Checked="LaserButton_Checked" Unchecked="LaserButton_Unchecked"/>
                     </Grid>
                     <StackPanel Width="130" Margin="10" HorizontalAlignment="Right" Orientation="Vertical">
                         <Label FontWeight="Bold" HorizontalAlignment="Center" Content="Signal Status"/>

@@ -60,7 +60,7 @@ namespace ZeiControl
         private void ExitButtonClick(object sender, RoutedEventArgs e)
         {
             nwHandler.StopConnectionStream();
-            Close();
+            Application.Current.Shutdown();
         }
 
 
@@ -124,6 +124,123 @@ namespace ZeiControl
                     HelperMethods.TransformAsBytePacket(
                         HelperMethods.RescaleToAnalogValue(((Slider)sender).Value), 0x59));
             }
+        }
+
+        private void LeftButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.leftPacket);
+        }
+
+        private void LeftButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
+        }
+
+        private void ForwardButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.forwardPacket)
+        }
+
+        private void ForwardButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
+        }
+
+        private void RightButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.rightPacket);
+        }
+
+        private void RightButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
+        }
+
+        private void ReverseButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.reversePacket);
+        }
+
+        private void ReverseButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
+        }
+
+        private void ReverseLeftButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.reverseLeftPacket);
+        }
+
+        private void ReverseLeftButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
+        }
+
+        private void ReverseRightButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.reverseRightPacket);
+        }
+
+        private void ReverseRightButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
+        }
+
+        private void PowerLEDButton_Checked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.powerLEDonPacket);
+        }
+
+        private void PowerLEDButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.powerLEDoffPacket);
+        }
+
+        private void smallLEDButton_Checked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.smallLEDonPacket);
+        }
+
+        private void smallLEDButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.smallLEDoffPacket);
+        }
+
+        private void FullStopButton_Checked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.emergencyStopPacket);
+        }
+
+        private void FullStopButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.emergencyOverPacket);
+        }
+
+        private void BuzzerButton_Checked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.buzzerOnPacket);
+        }
+
+        private void BuzzerButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.buzzerOffPacket);
+        }
+
+        private void LaserButton_Checked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.laserOnPacket);
+        }
+
+        private void LaserButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.laserOffPacket);
+        }
+
+        private void DatabaseBrowserButton_Click(object sender, RoutedEventArgs e)
+        {
+            DatabaseBrowserWindow databaseBrowserWindow = new();
+            databaseBrowserWindow.Owner = this;
+            databaseBrowserWindow.Show();
         }
     }
 }
