@@ -242,5 +242,12 @@ namespace ZeiControl
             databaseBrowserWindow.Owner = this;
             databaseBrowserWindow.Show();
         }
+
+        private void SaveSensorDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveSensorDataWindow saveSensorDataWindow = new();
+            saveSensorDataWindow.Owner = this;
+            _ = saveSensorDataWindow.ShowDialog();
+        }
     }
 }
