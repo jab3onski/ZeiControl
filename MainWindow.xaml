@@ -141,8 +141,8 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="58.333"/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="58.334"/>
+                            <RowDefinition Height="58.333"/>
                         </Grid.RowDefinitions>
 
                         <Button x:Name="LeftButton" Margin="5" Content="&#x2190;" Grid.Column="1" Grid.Row="1" PreviewMouseLeftButtonDown="LeftButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="LeftButton_PreviewMouseLeftButtonUp"/>
@@ -163,9 +163,9 @@
                         <StackPanel Margin="0,10,0,0" Orientation="Vertical" VerticalAlignment="Center">
                             <Label HorizontalAlignment="Center" Content="RRSI"/>
                             <TextBlock HorizontalAlignment="Center" Text="---"/>
-                            <Label HorizontalAlignment="Center" Content="Connection Time"/>
+                            <Label HorizontalAlignment="Center" Content="Uptime"/>
                             <TextBlock HorizontalAlignment="Center" Text="---"/>
-                            <Label HorizontalAlignment="Center" Content="Vehicle Speed"/>
+                            <Label HorizontalAlignment="Center" Content="Battery Voltage"/>
                             <TextBlock HorizontalAlignment="Center" Text="---"/>
                         </StackPanel>
                     </StackPanel>
