@@ -67,7 +67,6 @@ namespace ZeiControl
             {
                 Trace.WriteLine("Exception encountered: ");
                 Trace.WriteLine(ex.Message);
-
                 DefaultTableLabel.Visibility = Visibility.Hidden;
                 TableExistsLabel.Visibility = Visibility.Hidden;
                 ErrorLabel.Visibility = Visibility.Visible;

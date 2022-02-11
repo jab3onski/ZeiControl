@@ -28,12 +28,10 @@
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Margin="10" Orientation="Vertical">
                         <Label Content="Tables available to view:"/>
-                        <ComboBox MaxDropDownHeight="50" Width="150" Height="20">
-                            <ComboBoxItem Content="None" IsSelected="True"/>
-                        </ComboBox>
+                        <ComboBox x:Name="SelectTableComboBox" MaxDropDownHeight="400" Width="150" Height="20" SelectionChanged="SelectTableComboBox_SelectionChanged"></ComboBox>
                     </StackPanel>
                     <StackPanel Margin="50,10,10,10" Orientation="Vertical">
-                        <Button x:Name="DeleteSelButton" Margin="0,25,0,0" Width="100" Content="Delete selected"/>
+                        <Button x:Name="DeleteSelButton" Margin="0,25,0,0" Width="100" Content="Delete selected" Click="DeleteSelButton_Click"/>
                         <Button x:Name="CloseWindowButton" Margin="0,20,0,0" Width="100" Content="Close window" Click="CloseWindowButton_Click"/>
                     </StackPanel>
                 </StackPanel>
@@ -44,7 +42,7 @@
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,345,400"></RectangleGeometry>
                 </Border.Clip>
 
-                <ListView Height="375" x:Name="DatabaseItemsList" Margin="10">
+                <ListView Height="375" x:Name="DatabaseItemsListView" Margin="10">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="40"  Header="Id" DisplayMemberBinding="{Binding Id}"/>
