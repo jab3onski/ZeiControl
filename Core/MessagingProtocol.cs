@@ -60,7 +60,9 @@ namespace ZeiControl.Core
                         DatabaseHandling.AddSensorEntryToTemp(connection, "TestData", jpegSize);
 
                         _ = MainWindow.DbListView.Items.Add(
-                            new SensorData { Id = 1, SensorType = "Test", SensorValue = jpegSize, DateTimeValue = DateTime.Now });
+                            new SensorData { Id = MainWindow.SensorUpdatesCounter, SensorType = "Test", SensorValue = jpegSize, DateTimeValue = DateTime.Now });
+
+                        MainWindow.SensorUpdatesCounter++;
                     }
                     catch (Exception ex)
                     {

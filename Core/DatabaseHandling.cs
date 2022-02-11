@@ -143,5 +143,19 @@ namespace ZeiControl.Core
             SaveSensorDataWindow.IllegalCharLabel.Visibility = System.Windows.Visibility.Hidden;
             SaveSensorDataWindow.TableNotExists.Visibility = System.Windows.Visibility.Hidden;
         }
+
+        public static void ClearSessionDataFromTemp(SQLiteConnection connection)
+        {
+            SQLiteCommand command;
+            command = connection.CreateCommand();
+            command.CommandText =
+                $"DELETE FROM \"temp\";";
+            command.ExecuteNonQuery();
+
+            command = connection.CreateCommand();
+            command.CommandText =
+                $"UPDATE \"sqlite_sequence\" SET seq = 1 WHERE name = 'temp';";
+            command.ExecuteNonQuery();
+        }
     }
 }

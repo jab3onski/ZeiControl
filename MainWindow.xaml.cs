@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
@@ -25,6 +26,8 @@ namespace ZeiControl
         private bool XsliderDragStarted;
         private bool YsliderDragStarted;
 
+        public static int SensorUpdatesCounter { get; set; }
+
         public static Image StreamSourceFrame { get; set; }
         public static ListView DbListView { get; set; }
 
@@ -34,6 +37,8 @@ namespace ZeiControl
 
             XsliderDragStarted = false;
             YsliderDragStarted = false;
+
+            SensorUpdatesCounter = 0;
 
             StreamSourceFrame = CameraFrameImage;
             DbListView = DatabaseItemsList;
@@ -248,6 +253,24 @@ namespace ZeiControl
             SaveSensorDataWindow saveSensorDataWindow = new();
             saveSensorDataWindow.Owner = this;
             _ = saveSensorDataWindow.ShowDialog();
+        }
+
+        private void ClearSessionDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            SQLiteConnection connection;
+            connection = DatabaseHandling.CreateConnection();
+
+            try
+            {
+                DatabaseHandling.ClearSessionDataFromTemp(connection);
+                DbListView.Items.Clear();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("Exception encountered: ");
+                Trace.WriteLine(ex.Message);
+            }
+            connection.Close();
         }
     }
 }
