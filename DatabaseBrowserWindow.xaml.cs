@@ -20,6 +20,7 @@ namespace ZeiControl
     {
         public static ComboBox SelectedTableBox { get; set; }
         public static ListView TableItemsList { get; set; }
+        public static Button DeleteSelectedTable { get; set; }
 
         private bool displayNeeded;
 
@@ -29,6 +30,7 @@ namespace ZeiControl
 
             SelectedTableBox = SelectTableComboBox;
             TableItemsList = DatabaseItemsListView;
+            DeleteSelectedTable = DeleteSelButton;
 
             displayNeeded = true;
 
@@ -71,6 +73,7 @@ namespace ZeiControl
                 try
                 {
                     Core.DatabaseHandling.DisplayTableContents(connection, tableName);
+                    DeleteSelectedTable.IsEnabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -95,6 +98,7 @@ namespace ZeiControl
                 SelectedTableBox.Items.Remove(SelectedTableBox.SelectedItem);
                 SelectedTableBox.SelectedIndex = -1;
                 TableItemsList.Items.Clear();
+                DeleteSelectedTable.IsEnabled = false;
             }
             catch (Exception ex)
             {

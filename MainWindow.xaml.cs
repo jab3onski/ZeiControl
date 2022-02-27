@@ -31,12 +31,18 @@ namespace ZeiControl
         public static Image StreamSourceFrame { get; set; }
         public static ListView DbListView { get; set; }
 
+        private Slider Xslider { get; set; }
+        private Slider Yslider { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
             XsliderDragStarted = false;
             YsliderDragStarted = false;
+
+            Xslider = SliderXAxis;
+            Yslider = SliderYAxis;
 
             SensorUpdatesCounter = 0;
 
@@ -90,8 +96,7 @@ namespace ZeiControl
         private void SliderXAxis_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(
-                HelperMethods.TransformAsBytePacket(
-                    HelperMethods.RescaleToAnalogValue(((Slider)sender).Value), 0x58));
+                HelperMethods.TransformAsBytePacket(((Slider)sender).Value, 0x58));
 
             XsliderDragStarted = false;
         }
@@ -101,8 +106,7 @@ namespace ZeiControl
             if (!XsliderDragStarted)
             {
                 MessagingProtocol.ProcessOutgoingData(
-                HelperMethods.TransformAsBytePacket(
-                    HelperMethods.RescaleToAnalogValue(((Slider)sender).Value), 0x58));
+                    HelperMethods.TransformAsBytePacket(((Slider)sender).Value, 0x58));
             }
         }
 
@@ -115,8 +119,7 @@ namespace ZeiControl
         private void SliderYAxis_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(
-                HelperMethods.TransformAsBytePacket(
-                    HelperMethods.RescaleToAnalogValue(((Slider)sender).Value), 0x59));
+                HelperMethods.TransformAsBytePacket(((Slider)sender).Value, 0x59));
 
             YsliderDragStarted = false;
         }
@@ -126,8 +129,7 @@ namespace ZeiControl
             if (!YsliderDragStarted)
             {
                 MessagingProtocol.ProcessOutgoingData(
-                    HelperMethods.TransformAsBytePacket(
-                        HelperMethods.RescaleToAnalogValue(((Slider)sender).Value), 0x59));
+                    HelperMethods.TransformAsBytePacket(((Slider)sender).Value, 0x59));
             }
         }
 
@@ -201,16 +203,6 @@ namespace ZeiControl
             MessagingProtocol.ProcessOutgoingData(MessagingProtocol.powerLEDoffPacket);
         }
 
-        private void smallLEDButton_Checked(object sender, RoutedEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.smallLEDonPacket);
-        }
-
-        private void smallLEDButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.smallLEDoffPacket);
-        }
-
         private void FullStopButton_Checked(object sender, RoutedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(MessagingProtocol.emergencyStopPacket);
@@ -229,16 +221,6 @@ namespace ZeiControl
         private void BuzzerButton_Unchecked(object sender, RoutedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(MessagingProtocol.buzzerOffPacket);
-        }
-
-        private void LaserButton_Checked(object sender, RoutedEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.laserOnPacket);
-        }
-
-        private void LaserButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.laserOffPacket);
         }
 
         private void DatabaseBrowserButton_Click(object sender, RoutedEventArgs e)
@@ -271,6 +253,17 @@ namespace ZeiControl
                 Trace.WriteLine(ex.Message);
             }
             connection.Close();
+        }
+
+        private void ZeroOutAxis_Click(object sender, RoutedEventArgs e)
+        {
+            Xslider.Value = 90;
+            Yslider.Value = 90;
+        }
+
+        private void SensorSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

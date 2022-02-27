@@ -30,12 +30,8 @@ namespace ZeiControl.Core
         public static readonly byte[] cameraDisablePacket = { 0x23, 0x43, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
 
         //Misc commands (lights, beep)
-        public static readonly byte[] smallLEDonPacket = { 0x23, 0x4C, 0x5F, 0x00, 0x00, 0xFF, 0xFF, 0x23 };
-        public static readonly byte[] smallLEDoffPacket = { 0x23, 0x4C, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
         public static readonly byte[] powerLEDonPacket = { 0x23, 0x4C, 0x5F, 0x00, 0xFF, 0xFF, 0xFF, 0x23 };
         public static readonly byte[] powerLEDoffPacket = { 0x23, 0x4C, 0x5F, 0x00, 0xFF, 0x00, 0x00, 0x23 };
-        public static readonly byte[] laserOnPacket = { 0x23, 0x4C, 0x5F, 0xFF, 0x00, 0xFF, 0xFF, 0x23 };
-        public static readonly byte[] laserOffPacket = { 0x23, 0x4C, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
         public static readonly byte[] buzzerOnPacket = { 0x23, 0x42, 0x5F, 0xFF, 0xFF, 0xFF, 0xFF, 0x23 };
         public static readonly byte[] buzzerOffPacket = { 0x23, 0x42, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
 
@@ -53,14 +49,22 @@ namespace ZeiControl.Core
                     byte[] sizeData = { data[3], data[4], data[5], data[6] };
                     int jpegSize = BitConverter.ToInt32(sizeData);
 
-                    //send datasize to database and add to DatabaseListView
+                    isTransmittingImage = true;
+                    NetworkHandling.rxThreshold = jpegSize;
+                }
+
+                else if (data[1] == 0x54)
+                {
+                    byte[] valueData = { data[5], data[6] };
+                    int tempValue = BitConverter.ToInt32(valueData);
+
                     SQLiteConnection connection = DatabaseHandling.CreateConnection();
                     try
                     {
-                        DatabaseHandling.AddSensorEntryToTemp(connection, "TestData", jpegSize);
+                        DatabaseHandling.AddSensorEntryToTemp(connection, "Temperature", tempValue);
 
                         _ = MainWindow.DbListView.Items.Add(
-                            new SensorData { Id = MainWindow.SensorUpdatesCounter, SensorType = "Test", SensorValue = jpegSize, DateTimeValue = DateTime.Now });
+                            new SensorData { Id = MainWindow.SensorUpdatesCounter, SensorType = "Temperature", SensorValue = tempValue, DateTimeValue = DateTime.Now });
 
                         MainWindow.SensorUpdatesCounter++;
                     }
@@ -69,9 +73,6 @@ namespace ZeiControl.Core
                         Trace.WriteLine(ex.Message);
                     }
                     connection.Close();
-
-                    isTransmittingImage = true;
-                    NetworkHandling.rxThreshold = jpegSize;
                 }
             }
             else if (isTransmittingImage)
@@ -90,9 +91,10 @@ namespace ZeiControl.Core
 
         public static void ProcessOutgoingData(byte[] data)
         {
-            if(NetworkHandling.isConnected)
+            Trace.WriteLine(BitConverter.ToString(data));
+
+            if (NetworkHandling.isConnected)
             {
-                Trace.WriteLine(BitConverter.ToString(data));
                 NetworkHandling.txMessageQueue.Add(data);
             }
         }

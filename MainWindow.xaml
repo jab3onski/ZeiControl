@@ -58,10 +58,11 @@
                 </Border.Clip>
 
                 <StackPanel Orientation="Vertical">
-                    <Label Content="Database options" HorizontalAlignment="Center" FontSize="20" Margin="0,10,0,10"/>
-                    <Button x:Name="SaveSensorDataButton" Content="Save data" Width="175" Margin="10" Click="SaveSensorDataButton_Click"/>
-                    <Button x:Name="ClearSessionDataButton" Content="Clear session data" Width="175" Margin="10" Click="ClearSessionDataButton_Click"/>
-                    <Button x:Name="DatabaseBrowserButton" Content="Database browser" Width="175" Margin="10" Click="DatabaseBrowserButton_Click"/>
+                    <Label Content="Sensor Options" HorizontalAlignment="Center" FontSize="20" Margin="0,10,0,10"/>
+                    <Button x:Name="SaveSensorDataButton" Content="Save data" Width="175" Margin="5" Click="SaveSensorDataButton_Click"/>
+                    <Button x:Name="ClearSessionDataButton" Content="Clear session data" Width="175" Margin="5" Click="ClearSessionDataButton_Click"/>
+                    <Button x:Name="DatabaseBrowserButton" Content="Database browser" Width="175" Margin="5" Click="DatabaseBrowserButton_Click"/>
+                    <Button x:Name="SensorSettingsButton" Content="Sensor settings" Width="175" Margin="5" Click="SensorSettingsButton_Click"/>
                 </StackPanel>
 
             </Border>
@@ -76,9 +77,10 @@
                     <Image x:Name="CameraFrameImage" Source="pack://application:,,,/Images/NoImage.png"/>
                     <ToggleButton Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
                     <Slider 
-                        x:Name="SliderXAxis" 
-                        Minimum="-90" 
-                        Maximum="90" 
+                        x:Name="SliderXAxis"
+                        Value="90"
+                        Minimum="0" 
+                        Maximum="180" 
                         Canvas.Bottom="10" 
                         Canvas.Right="30" 
                         Width="200" 
@@ -90,9 +92,10 @@
                         TickFrequency="1"/>
                     <Slider 
                         x:Name="SliderYAxis" 
-                        Orientation="Vertical" 
-                        Minimum="-90" 
-                        Maximum="90" 
+                        Orientation="Vertical"
+                        Value="90"
+                        Minimum="0" 
+                        Maximum="180" 
                         Canvas.Bottom="30" 
                         Canvas.Right="10" 
                         Height="200"
@@ -108,7 +111,7 @@
                             <RotateTransform Angle="270"/>
                         </Label.LayoutTransform>
                     </Label>
-                    <Button Content="0" Height="20" Width="20" Canvas.Left="610" Canvas.Top="450"/>
+                    <Button x:Name="ZeroOutAxis" Content="&#xFF10;" Height="20" Width="20" Canvas.Left="610" Canvas.Top="450" Click="ZeroOutAxis_Click"/>
                 </Canvas>
             </Border>
 
@@ -151,19 +154,17 @@
                         <Button x:Name="ReverseRightButton" Margin="5" Content="&#x2198;" Grid.Column="3" Grid.Row="2" PreviewMouseLeftButtonDown="ReverseRightButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseRightButton_PreviewMouseLeftButtonUp"/>
 
                         <ToggleButton x:Name="PowerLEDButton" Margin="5" Content="PLED" Grid.Column="1" Grid.Row="0" Checked="PowerLEDButton_Checked" Unchecked="PowerLEDButton_Unchecked"/>
-                        <ToggleButton x:Name="smallLEDButton" Margin="5" Content="Lights" Grid.Column="3" Grid.Row="0" Checked="smallLEDButton_Checked" Unchecked="smallLEDButton_Unchecked"/>
-                        <ToggleButton x:Name="FullStopButton" Margin="5" Content="Stop" Grid.Column="0" Grid.Row="2" Checked="FullStopButton_Checked" Unchecked="FullStopButton_Unchecked"/>
-                        <ToggleButton x:Name="BuzzerButton" Margin="5" Content="Buzzer" Grid.Column="2" Grid.Row="2" Checked="BuzzerButton_Checked" Unchecked="BuzzerButton_Unchecked"/>
-                        <ToggleButton x:Name="LaserButton" Margin="5" Content="Laser" Grid.Column="4" Grid.Row="2" Checked="LaserButton_Checked" Unchecked="LaserButton_Unchecked"/>
+                        <ToggleButton x:Name="FullStopButton" Margin="5" Content="Stop" Grid.Column="2" Grid.Row="2" Checked="FullStopButton_Checked" Unchecked="FullStopButton_Unchecked"/>
+                        <ToggleButton x:Name="BuzzerButton" Margin="5" Content="Buzzer" Grid.Column="3" Grid.Row="0" Checked="BuzzerButton_Checked" Unchecked="BuzzerButton_Unchecked"/>
                     </Grid>
                     <StackPanel Width="130" Margin="10" HorizontalAlignment="Right" Orientation="Vertical">
-                        <Label FontWeight="Bold" HorizontalAlignment="Center" Content="Robot Status"/>
+                        <Label FontWeight="Bold" HorizontalAlignment="Center" Content="Robot Diagnostics"/>
                         <StackPanel Margin="0,10,0,0" Orientation="Vertical" VerticalAlignment="Center">
                             <Label HorizontalAlignment="Center" Content="RRSI"/>
                             <TextBlock HorizontalAlignment="Center" Text="---"/>
                             <Label HorizontalAlignment="Center" Content="Uptime"/>
                             <TextBlock HorizontalAlignment="Center" Text="---"/>
-                            <Label HorizontalAlignment="Center" Content="Battery Voltage"/>
+                            <Label HorizontalAlignment="Center" Content="Cell Voltage"/>
                             <TextBlock HorizontalAlignment="Center" Text="---"/>
                         </StackPanel>
                     </StackPanel>

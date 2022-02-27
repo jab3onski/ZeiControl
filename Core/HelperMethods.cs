@@ -17,7 +17,7 @@ namespace ZeiControl.Core
             return scaled;
         }
 
-        public static byte[] TransformAsBytePacket(int value, byte commandByte)
+        public static byte[] TransformAsBytePacket(double value, byte commandByte)
         {
             byte[] arrayOfBytes = new byte[8];
             byte[] valueByteArray = BitConverter.GetBytes((uint)value);
