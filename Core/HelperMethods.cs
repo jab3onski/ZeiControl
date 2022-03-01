@@ -17,7 +17,7 @@ namespace ZeiControl.Core
             return scaled;
         }
 
-        public static byte[] TransformAsBytePacket(double value, byte commandByte)
+        public static byte[] TransformAsBytePacket32Bit(double value, byte commandByte)
         {
             byte[] arrayOfBytes = new byte[8];
             byte[] valueByteArray = BitConverter.GetBytes((uint)value);
@@ -29,6 +29,24 @@ namespace ZeiControl.Core
             arrayOfBytes[4] = valueByteArray[1];
             arrayOfBytes[5] = valueByteArray[2];
             arrayOfBytes[6] = valueByteArray[3];
+            arrayOfBytes[7] = 0x23;
+
+            return arrayOfBytes;
+        }
+
+        public static byte[] TransformAsBytePacket16Bit(double value,
+            byte commandByte, byte deviceByte1, byte deviceByte2)
+        {
+            byte[] arrayOfBytes = new byte[8];
+            byte[] valueByteArray = BitConverter.GetBytes((ushort)value);
+
+            arrayOfBytes[0] = 0x23;
+            arrayOfBytes[1] = commandByte;
+            arrayOfBytes[2] = 0x5F;
+            arrayOfBytes[3] = deviceByte1;
+            arrayOfBytes[4] = deviceByte2;
+            arrayOfBytes[5] = valueByteArray[0];
+            arrayOfBytes[6] = valueByteArray[1];
             arrayOfBytes[7] = 0x23;
 
             return arrayOfBytes;

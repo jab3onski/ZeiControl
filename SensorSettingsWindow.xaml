@@ -1,0 +1,61 @@
+﻿<Window x:Class="ZeiControl.SensorSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZeiControl"
+        mc:Ignorable="d"
+        Title="Sensor Settings" Height="300" Width="200"
+        ResizeMode="NoResize" WindowStyle="None"
+        WindowStartupLocation="CenterOwner"
+        Background="Transparent" AllowsTransparency="True">
+    <Border CornerRadius="20">
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1">
+                <GradientStop Color="#C5E3FF" Offset="0"></GradientStop>
+                <GradientStop Color="#95BBEE" Offset="0.7"></GradientStop>
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <Border Margin="15" Height="270" Width="170" Background="White" Grid.Row="0" Grid.Column="0">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,170,270"></RectangleGeometry>
+            </Border.Clip>
+
+            <StackPanel Orientation="Vertical">
+                <Label HorizontalAlignment="Center" Content="Update Intervals"/>
+                <Image ToolTipService.InitialShowDelay="500" ToolTipService.ShowDuration="10000" Height="16" Width="16" Source="pack://application:,,,/Images/ToolTipIcon.png">
+                    <Image.ToolTip>
+                        <ToolTip HasDropShadow="True">
+                            <TextBlock Width="200" TextWrapping="Wrap">
+                                Attention! Time interval must be between 500 - 65535 ms, value of <Bold>0</Bold> means sensor updates <Bold>are disabled</Bold>.
+                            </TextBlock>
+                        </ToolTip>
+                    </Image.ToolTip>
+                </Image>
+                <Label Margin="0,10,0,0" HorizontalAlignment="Center" Content="Proximity Sensors Interval"/>
+                <TextBox x:Name="ProximityIntervalBox" Width="75" PreviewTextInput="ProximityIntervalBox_PreviewTextInput"/>
+                <Label HorizontalAlignment="Center" Content="Temperature Sensor Interval"/>
+                <TextBox x:Name="TemperatureIntervalBox" Width="75" PreviewTextInput="TemperatureIntervalBox_PreviewTextInput"/>
+                <Grid Margin="0,55,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label x:Name="LabelFailed" HorizontalAlignment="Center" Content="Value incorrect, see tooltip" Foreground="Red" Visibility="Hidden"/>
+                    <Label x:Name="LabelSuccessful" HorizontalAlignment="Center" Content="Operation completed" Foreground="Green" Visibility="Hidden"/>
+                </Grid>
+                <UniformGrid Columns="2">
+                    <Button Margin="5" x:Name="ApplyButton" Content="Apply" Click="ApplyButton_Click"/>
+                    <Button Margin="5" x:Name="CloseWindowButton" Content="Exit" Click="CloseWindowButton_Click"/>
+                </UniformGrid>
+            </StackPanel>
+            
+        </Border>
+
+    </Border>
+</Window>

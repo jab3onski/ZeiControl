@@ -98,5 +98,15 @@ namespace ZeiControl.Core
                 NetworkHandling.txMessageQueue.Add(data);
             }
         }
+
+        public static void SendMessageTempInterval(int value)
+        {
+            ProcessOutgoingData(HelperMethods.TransformAsBytePacket16Bit(value, 0x49, 0x00, 0x00));
+        }
+
+        public static void SendMessageProximityInterval(int value)
+        {
+            ProcessOutgoingData(HelperMethods.TransformAsBytePacket16Bit(value, 0x49, 0x00, 0xFF));
+        }
     }
 }

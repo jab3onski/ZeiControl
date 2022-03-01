@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Remove="Core\database.db" />
     <None Remove="Images\NoImage.png" />
+    <None Remove="Images\ToolTipIcon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +28,7 @@
 
   <ItemGroup>
     <Resource Include="Images\NoImage.png" />
+    <Resource Include="Images\ToolTipIcon.png" />
   </ItemGroup>
 
 </Project>

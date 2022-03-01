@@ -96,7 +96,7 @@ namespace ZeiControl
         private void SliderXAxis_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(
-                HelperMethods.TransformAsBytePacket(((Slider)sender).Value, 0x58));
+                HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x58));
 
             XsliderDragStarted = false;
         }
@@ -106,7 +106,7 @@ namespace ZeiControl
             if (!XsliderDragStarted)
             {
                 MessagingProtocol.ProcessOutgoingData(
-                    HelperMethods.TransformAsBytePacket(((Slider)sender).Value, 0x58));
+                    HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x58));
             }
         }
 
@@ -119,7 +119,7 @@ namespace ZeiControl
         private void SliderYAxis_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(
-                HelperMethods.TransformAsBytePacket(((Slider)sender).Value, 0x59));
+                HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x59));
 
             YsliderDragStarted = false;
         }
@@ -129,7 +129,7 @@ namespace ZeiControl
             if (!YsliderDragStarted)
             {
                 MessagingProtocol.ProcessOutgoingData(
-                    HelperMethods.TransformAsBytePacket(((Slider)sender).Value, 0x59));
+                    HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x59));
             }
         }
 
@@ -263,7 +263,9 @@ namespace ZeiControl
 
         private void SensorSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-
+            SensorSettingsWindow sensorSettingsWindow = new();
+            sensorSettingsWindow.Owner = this;
+            sensorSettingsWindow.Show();
         }
     }
 }
