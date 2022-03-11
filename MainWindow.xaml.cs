@@ -30,6 +30,13 @@ namespace ZeiControl
 
         public static Image StreamSourceFrame { get; set; }
         public static ListView DbListView { get; set; }
+        public static TextBlock FrontSensorTextBlock { get; set; }
+        public static TextBlock LeftSensorTextBlock { get; set; }
+        public static TextBlock RightSensorTextBlock { get; set; }
+        public static TextBlock RRSITextBlock { get; set; }
+        public static TextBlock UptimeTextBlock { get; set; }
+        public static TextBlock CellVoltageTextBlock { get; set; }
+
 
         private Slider Xslider { get; set; }
         private Slider Yslider { get; set; }
@@ -43,11 +50,18 @@ namespace ZeiControl
 
             Xslider = SliderXAxis;
             Yslider = SliderYAxis;
-
             SensorUpdatesCounter = 0;
 
             StreamSourceFrame = CameraFrameImage;
             DbListView = DatabaseItemsList;
+            FrontSensorTextBlock = FrontProxTBlock;
+            LeftSensorTextBlock = LeftProxTBlock;
+            RightSensorTextBlock = RightProxTBlock;
+            RRSITextBlock = RRSITBox;
+            UptimeTextBlock = UptimeTBox;
+            CellVoltageTextBlock = CVoltageTBox;
+
+
         }
 
         //Move window override

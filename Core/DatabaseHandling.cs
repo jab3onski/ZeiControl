@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -28,12 +29,12 @@ namespace ZeiControl.Core
             return sqlite_conn;
         }
 
-        public static void AddSensorEntryToTemp(SQLiteConnection connection, string type, int value)
+        public static void AddSensorEntryToTemp(SQLiteConnection connection, string type, double value)
         {
             SQLiteCommand command;
             command = connection.CreateCommand();
             command.CommandText =
-                $"INSERT INTO temp (sensorType, value) VALUES ('{type}', {value});";
+                $"INSERT INTO temp (sensorType, value) VALUES ('{type}', '{value}');";
             command.ExecuteNonQuery();
         } 
 
@@ -56,7 +57,7 @@ namespace ZeiControl.Core
             {
                 command = connection.CreateCommand();
                 command.CommandText =
-                    $"CREATE TABLE \"{tablename}\" (\"id\" INTEGER NOT NULL UNIQUE, \"sensorType\" TEXT NOT NULL, \"value\" INTEGER NOT NULL, \"sqlTimestamp\" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(\"id\" AUTOINCREMENT));";
+                    $"CREATE TABLE \"{tablename}\" (\"id\" INTEGER NOT NULL UNIQUE, \"sensorType\" TEXT NOT NULL, \"value\" REAL NOT NULL, \"sqlTimestamp\" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(\"id\" AUTOINCREMENT));";
                 command.ExecuteNonQuery();
             }
             catch (Exception e)
@@ -80,13 +81,14 @@ namespace ZeiControl.Core
             while(sqlite_datareader.Read())
             {
                 string type = sqlite_datareader.GetString(1);
-                int value = sqlite_datareader.GetInt32(2);
+                string valueString = sqlite_datareader.GetString(2).Replace(",", ".");
+                double value = Convert.ToDouble(valueString, CultureInfo.InvariantCulture);
                 string dateTime = sqlite_datareader.GetString(3);
 
                 command = connection.CreateCommand();
 
                 command.CommandText =
-                    $"INSERT INTO \"{tablename}\" (sensorType, value, sqlTimestamp) VALUES ('{type}', {value}, '{dateTime}');";
+                    $"INSERT INTO \"{tablename}\" (sensorType, value, sqlTimestamp) VALUES ('{type}', '{value}', '{dateTime}');";
                 command.ExecuteNonQuery();
             }
 
@@ -138,13 +140,14 @@ namespace ZeiControl.Core
             while (sqlite_datareader.Read())
             {
                 string type = sqlite_datareader.GetString(1);
-                int value = sqlite_datareader.GetInt32(2);
-                DateTime dateTime = sqlite_datareader.GetDateTime(3);
+                string valueString = sqlite_datareader.GetString(2).Replace(",", ".");
+                double value = Convert.ToDouble(valueString, CultureInfo.InvariantCulture);
+                string dateTime = sqlite_datareader.GetString(3);
 
                 command = connection.CreateCommand();
 
                 command.CommandText =
-                    $"INSERT INTO \"{tablename}\" (sensorType, value, sqlTimestamp) VALUES ('{type}', {value}, '{dateTime}');";
+                    $"INSERT INTO \"{tablename}\" (sensorType, value, sqlTimestamp) VALUES ('{type}', '{value}', '{dateTime}');";
                 command.ExecuteNonQuery();
             }
 
@@ -202,8 +205,9 @@ namespace ZeiControl.Core
             {
                 int id = sqlite_datareader.GetInt32(0);
                 string sensorType = sqlite_datareader.GetString(1);
-                int sensorValue = sqlite_datareader.GetInt32(2);
-                DateTime dateTimeValue = sqlite_datareader.GetDateTime(3);
+                string valueString = sqlite_datareader.GetString(2).Replace(",", ".");
+                double sensorValue = Convert.ToDouble(valueString, CultureInfo.InvariantCulture);
+                string dateTimeValue = sqlite_datareader.GetString(3);
 
                 _ = DatabaseBrowserWindow.TableItemsList.Items.Add(
                             new SensorData { Id = id, SensorType = sensorType, SensorValue = sensorValue, DateTimeValue = dateTimeValue });

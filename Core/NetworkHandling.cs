@@ -32,7 +32,6 @@ namespace ZeiControl.Core
                 {
                     tcpClient = new();
                     tcpClient.ReceiveBufferSize = 131072; //128kb buffer (images go up to around 110kb)
-                    tcpClient.SendBufferSize = 128;
                     tcpClient.Connect(hostEndPoint);
                     isConnected = true;
 
@@ -111,7 +110,7 @@ namespace ZeiControl.Core
                         NetworkStream networkStream = tcpClient.GetStream();
                         if (networkStream.CanRead)
                         {
-                            byte[] receivedBytes = new byte[tcpClient.ReceiveBufferSize];
+                            byte[] receivedBytes = new byte[rxThreshold];
                             networkStream.Read(receivedBytes, 0, rxThreshold);
                             OnDataReceived(receivedBytes);
                         }
@@ -128,6 +127,7 @@ namespace ZeiControl.Core
 
         private void OnDataReceived(byte[] data)
         {
+            //Trace.WriteLine(BitConverter.ToString(data));
             messagingProtocol.ProcessIncomingData(data);
         }
     }

@@ -12,8 +12,8 @@ namespace ZeiControl.Core
 
         public string SensorType { get; set; }
 
-        public int SensorValue { get; set; }
+        public double SensorValue { get; set; }
 
-        public DateTime DateTimeValue { get; set; }
+        public string DateTimeValue { get; set; }
     }
 }

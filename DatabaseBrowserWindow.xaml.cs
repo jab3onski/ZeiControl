@@ -32,6 +32,7 @@ namespace ZeiControl
             TableItemsList = DatabaseItemsListView;
             DeleteSelectedTable = DeleteSelButton;
 
+            DeleteSelectedTable.IsEnabled = false;
             displayNeeded = true;
 
             SQLiteConnection connection;

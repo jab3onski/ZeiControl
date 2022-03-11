@@ -73,11 +73,6 @@ namespace ZeiControl
                     LabSuccessful.Visibility = Visibility.Visible;
                     LabFailed.Visibility = Visibility.Hidden;
                 }
-                else
-                {
-                    LabSuccessful.Visibility = Visibility.Hidden;
-                    LabFailed.Visibility = Visibility.Visible;
-                }
 
                 if (ushort.TryParse(TextBoxProximityInterval.Text, out ushort proximityInterval) &&
                     TextBoxProximityInterval.Text.Length > 0 && proximityInterval >= 500)
@@ -85,11 +80,6 @@ namespace ZeiControl
                     MessagingProtocol.SendMessageProximityInterval(proximityInterval);
                     LabSuccessful.Visibility = Visibility.Visible;
                     LabFailed.Visibility = Visibility.Hidden;
-                }
-                else
-                {
-                    LabSuccessful.Visibility = Visibility.Hidden;
-                    LabFailed.Visibility = Visibility.Visible;
                 }
             }
             else
