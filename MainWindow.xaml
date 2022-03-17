@@ -59,9 +59,9 @@
 
                 <StackPanel Orientation="Vertical">
                     <Label Content="Sensor Options" HorizontalAlignment="Center" FontSize="20" Margin="0,10,0,10"/>
-                    <Button IsEnabled="False" x:Name="SaveSensorDataButton" Content="Save data" Width="175" Margin="5" Click="SaveSensorDataButton_Click"/>
-                    <Button IsEnabled="False" x:Name="ClearSessionDataButton" Content="Clear session data" Width="175" Margin="5" Click="ClearSessionDataButton_Click"/>
-                    <Button IsEnabled="False" x:Name="SensorSettingsButton" Content="Sensor settings" Width="175" Margin="5" Click="SensorSettingsButton_Click"/>
+                    <Button x:Name="SaveSensorDataButton" Content="Save data" Width="175" Margin="5" Click="SaveSensorDataButton_Click"/>
+                    <Button x:Name="ClearSessionDataButton" Content="Clear session data" Width="175" Margin="5" Click="ClearSessionDataButton_Click"/>
+                    <Button x:Name="SensorSettingsButton" Content="Sensor settings" Width="175" Margin="5" Click="SensorSettingsButton_Click"/>
                     <Button x:Name="DatabaseBrowserButton" Content="Database browser" Width="175" Margin="5" Click="DatabaseBrowserButton_Click"/>
                 </StackPanel>
 
@@ -75,10 +75,9 @@
                 </Border.Clip>
                 <Canvas>
                     <Image x:Name="CameraFrameImage" Source="pack://application:,,,/Images/NoImage.png"/>
-                    <ToggleButton IsEnabled="False" Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
+                    <ToggleButton x:Name="CameraButton" Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
                     <Slider 
                         x:Name="SliderXAxis"
-                        IsEnabled="False"
                         Value="90"
                         Minimum="0" 
                         Maximum="180" 
@@ -93,7 +92,6 @@
                         TickFrequency="1"/>
                     <Slider 
                         x:Name="SliderYAxis"
-                        IsEnabled="False"
                         Orientation="Vertical"
                         Value="90"
                         Minimum="0" 
@@ -113,7 +111,7 @@
                             <RotateTransform Angle="270"/>
                         </Label.LayoutTransform>
                     </Label>
-                    <Button IsEnabled="False" x:Name="ZeroOutAxis" Content="&#xFF10;" Height="20" Width="20" Canvas.Left="610" Canvas.Top="450" Click="ZeroOutAxis_Click"/>
+                    <Button x:Name="ZeroOutAxis" Content="&#xFF10;" Height="20" Width="20" Canvas.Left="610" Canvas.Top="450" Click="ZeroOutAxis_Click"/>
                 </Canvas>
             </Border>
 
@@ -148,16 +146,16 @@
                             <RowDefinition Height="58.333"/>
                         </Grid.RowDefinitions>
 
-                        <Button IsEnabled="False" x:Name="LeftButton" Margin="5" Content="&#x2190;" Grid.Column="1" Grid.Row="1" PreviewMouseLeftButtonDown="LeftButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="LeftButton_PreviewMouseLeftButtonUp"/>
-                        <Button IsEnabled="False" x:Name="ForwardButton" Margin="5" Content="&#x2191;" Grid.Column="2" Grid.Row="0" PreviewMouseLeftButtonDown="ForwardButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ForwardButton_PreviewMouseLeftButtonUp"/>
-                        <Button IsEnabled="False" x:Name="RightButton" Margin="5" Content="&#x2192;" Grid.Column="3" Grid.Row="1" PreviewMouseLeftButtonDown="RightButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="RightButton_PreviewMouseLeftButtonUp"/>
-                        <Button IsEnabled="False" x:Name="ReverseButton" Margin="5" Content="&#x2193;" Grid.Column="2" Grid.Row="1" PreviewMouseLeftButtonDown="ReverseButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseButton_PreviewMouseLeftButtonUp"/>
-                        <Button IsEnabled="False" x:Name="ReverseLeftButton" Margin="5" Content="&#x2199;" Grid.Column="1" Grid.Row="2" PreviewMouseLeftButtonDown="ReverseLeftButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseLeftButton_PreviewMouseLeftButtonUp"/>
-                        <Button IsEnabled="False" x:Name="ReverseRightButton" Margin="5" Content="&#x2198;" Grid.Column="3" Grid.Row="2" PreviewMouseLeftButtonDown="ReverseRightButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseRightButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="LeftButton" Margin="5" Content="&#x2190;" Grid.Column="1" Grid.Row="1" PreviewMouseLeftButtonDown="LeftButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="LeftButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="ForwardButton" Margin="5" Content="&#x2191;" Grid.Column="2" Grid.Row="0" PreviewMouseLeftButtonDown="ForwardButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ForwardButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="RightButton" Margin="5" Content="&#x2192;" Grid.Column="3" Grid.Row="1" PreviewMouseLeftButtonDown="RightButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="RightButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="ReverseButton" Margin="5" Content="&#x2193;" Grid.Column="2" Grid.Row="1" PreviewMouseLeftButtonDown="ReverseButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="ReverseLeftButton" Margin="5" Content="&#x2199;" Grid.Column="1" Grid.Row="2" PreviewMouseLeftButtonDown="ReverseLeftButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseLeftButton_PreviewMouseLeftButtonUp"/>
+                        <Button x:Name="ReverseRightButton" Margin="5" Content="&#x2198;" Grid.Column="3" Grid.Row="2" PreviewMouseLeftButtonDown="ReverseRightButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="ReverseRightButton_PreviewMouseLeftButtonUp"/>
 
-                        <ToggleButton IsEnabled="False" x:Name="PowerLEDButton" Margin="5" Content="PLED" Grid.Column="1" Grid.Row="0" Checked="PowerLEDButton_Checked" Unchecked="PowerLEDButton_Unchecked"/>
-                        <ToggleButton IsEnabled="False" x:Name="FullStopButton" Margin="5" Content="Stop" Grid.Column="2" Grid.Row="2" Checked="FullStopButton_Checked" Unchecked="FullStopButton_Unchecked"/>
-                        <ToggleButton IsEnabled="False" x:Name="BuzzerButton" Margin="5" Content="Buzzer" Grid.Column="3" Grid.Row="0" Checked="BuzzerButton_Checked" Unchecked="BuzzerButton_Unchecked"/>
+                        <ToggleButton x:Name="PowerLEDButton" Margin="5" Content="PLED" Grid.Column="1" Grid.Row="0" Checked="PowerLEDButton_Checked" Unchecked="PowerLEDButton_Unchecked"/>
+                        <ToggleButton x:Name="FullStopButton" Margin="5" Content="Stop" Grid.Column="2" Grid.Row="2" Checked="FullStopButton_Checked" Unchecked="FullStopButton_Unchecked"/>
+                        <ToggleButton x:Name="BuzzerButton" Margin="5" Content="Buzzer" Grid.Column="3" Grid.Row="0" Checked="BuzzerButton_Checked" Unchecked="BuzzerButton_Unchecked"/>
                     </Grid>
                     <StackPanel Width="130" Margin="10" HorizontalAlignment="Right" Orientation="Vertical">
                         <Label FontWeight="Bold" HorizontalAlignment="Center" Content="Robot Diagnostics"/>
@@ -207,11 +205,11 @@
                         Width="100"
                         Content="Connect"
                         Margin="0,20,0,0" Click="ConnectButtonClick"/>
-                    <Button 
+                    <Button
+                        x:Name="DisconnectButton"
                         Width="100"
                         Content="Disconnect"
-                        Margin="0,20,0,0" Click="DisconnectButtonClick"
-                        IsEnabled="False"/>
+                        Margin="0,20,0,0" Click="DisconnectButtonClick"/>
                     <Button 
                         Width="100"
                         Content="Exit"

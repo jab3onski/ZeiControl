@@ -121,16 +121,24 @@ namespace ZeiControl.Core
                         double distanceValue =
                             Math.Pow(proximityValue * 3.15 / 675.0, -1.173) * 29.988;
 
-                        MainWindow.FrontSensorTextBlock.Text =
+                        if (distanceValue <= 90)
+                        {
+                            MainWindow.FrontSensorTextBlock.Text =
                             string.Concat(Math.Round(distanceValue, 1).ToString(), " cm");
+                        }
+                        else
+                        {
+                            MainWindow.FrontSensorTextBlock.Text = "Overrange";
+                        }
                     }
 
                 }
 
                 else if (data[1] == 0x55)
                 {
-                    uint uptimeValue = BitConverter.ToUInt32(valueData32Bit);
-                    TimeSpan currentUptime = TimeSpan.FromMilliseconds(uptimeValue);
+                    uint uptimeValue = BitConverter.ToUInt32(valueData32Bit) / 1000;
+                    TimeSpan currentUptime =
+                        TimeSpan.FromSeconds(uptimeValue);
 
                     MainWindow.UptimeTextBlock.Text = currentUptime.ToString();
                 }
@@ -146,7 +154,8 @@ namespace ZeiControl.Core
 
                     else if (data[3] == 0x00 && data[4] == 0xFF)
                     {
-                        MainWindow.RRSITextBlock.Text = diagnosticsValue.ToString();
+                        MainWindow.RRSITextBlock.Text =
+                            string.Concat("-", diagnosticsValue.ToString(), " dBm");
                     }
                 }
             }
@@ -162,7 +171,7 @@ namespace ZeiControl.Core
             else
             {
                 Trace.Write("Unknown Packet!##: ");
-                Trace.WriteLine(BitConverter.ToString(data).Substring(0, 100));
+                Trace.WriteLine(BitConverter.ToString(data).Substring(0, 8));
             }
         }
 

@@ -51,5 +51,59 @@ namespace ZeiControl.Core
 
             return arrayOfBytes;
         }
+
+        public static void ChangeEnablePropertyWiFi(bool isEnabled)
+        {
+            if (isEnabled)
+            {
+                MainWindow.SaveDataButton.IsEnabled = true;
+                MainWindow.ClearDataButton.IsEnabled = true;
+                MainWindow.SettingsButton.IsEnabled = true;
+
+                MainWindow.MoveForwardButton.IsEnabled = true;
+                MainWindow.MoveLeftButton.IsEnabled = true;
+                MainWindow.MoveRightButton.IsEnabled = true;
+                MainWindow.MoveReverseButton.IsEnabled = true;
+                MainWindow.MoveReverseLeftButton.IsEnabled = true;
+                MainWindow.MoveReverseRightButton.IsEnabled = true;
+                MainWindow.BuzzerEnableButton.IsEnabled = true;
+                MainWindow.PLEDEnableButton.IsEnabled = true;
+                MainWindow.StopEnableButton.IsEnabled = true;
+
+                MainWindow.EnableCameraButton.IsEnabled = true;
+                MainWindow.ZeroOutAxisButton.IsEnabled = true;
+
+                MainWindow.Xslider.IsEnabled = true;
+                MainWindow.Yslider.IsEnabled = true;
+
+                MainWindow.CloseConnectionButton.IsEnabled = true;
+            }
+
+            else
+            {
+                MainWindow.SaveDataButton.IsEnabled = false;
+                MainWindow.ClearDataButton.IsEnabled = false;
+                MainWindow.SettingsButton.IsEnabled = false;
+
+                MainWindow.MoveForwardButton.IsEnabled = false;
+                MainWindow.MoveLeftButton.IsEnabled = false;
+                MainWindow.MoveRightButton.IsEnabled = false;
+                MainWindow.MoveReverseButton.IsEnabled = false;
+                MainWindow.MoveReverseLeftButton.IsEnabled = false;
+                MainWindow.MoveReverseRightButton.IsEnabled = false;
+                MainWindow.BuzzerEnableButton.IsEnabled = false;
+                MainWindow.PLEDEnableButton.IsEnabled = false;
+                MainWindow.StopEnableButton.IsEnabled = false;
+
+                MainWindow.EnableCameraButton.IsEnabled = false;
+                MainWindow.ZeroOutAxisButton.IsEnabled = false;
+
+                MainWindow.Xslider.IsEnabled = false;
+                MainWindow.Yslider.IsEnabled = false;
+
+                MainWindow.CloseConnectionButton.IsEnabled = false;
+            }
+        }
+
     }
 }

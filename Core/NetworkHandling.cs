@@ -37,6 +37,8 @@ namespace ZeiControl.Core
 
                     _ = SendMessageTask();
                     _ = ReceiveMessageTask();
+
+                    HelperMethods.ChangeEnablePropertyWiFi(true);
                 }
                 catch (Exception exc)
                 {
@@ -60,6 +62,7 @@ namespace ZeiControl.Core
                     tcpClient.Client.Close();
 
                     isConnected = false;
+                    HelperMethods.ChangeEnablePropertyWiFi(false);
                 }
                 catch (Exception exc)
                 {

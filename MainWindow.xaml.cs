@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -37,9 +38,26 @@ namespace ZeiControl
         public static TextBlock UptimeTextBlock { get; set; }
         public static TextBlock CellVoltageTextBlock { get; set; }
 
+        public static Button SaveDataButton { get; set; }
+        public static Button ClearDataButton { get; set; }
+        public static Button SettingsButton { get; set; }
 
-        private Slider Xslider { get; set; }
-        private Slider Yslider { get; set; }
+        public static Button MoveForwardButton { get; set; }
+        public static Button MoveLeftButton { get; set; }
+        public static Button MoveRightButton { get; set; }
+        public static Button MoveReverseButton { get; set; }
+        public static Button MoveReverseLeftButton { get; set; }
+        public static Button MoveReverseRightButton { get; set; }
+        public static ToggleButton BuzzerEnableButton { get; set; }
+        public static ToggleButton PLEDEnableButton { get; set; }
+        public static ToggleButton StopEnableButton { get; set; }
+
+        public static Slider Xslider { get; set; }
+        public static Slider Yslider { get; set; }
+        public static ToggleButton EnableCameraButton { get; set; }
+        public static Button ZeroOutAxisButton { get; set; }
+
+        public static Button CloseConnectionButton { get; set; }
 
         public MainWindow()
         {
@@ -52,6 +70,8 @@ namespace ZeiControl
             Yslider = SliderYAxis;
             SensorUpdatesCounter = 0;
 
+            CloseConnectionButton = DisconnectButton;
+
             StreamSourceFrame = CameraFrameImage;
             DbListView = DatabaseItemsList;
             FrontSensorTextBlock = FrontProxTBlock;
@@ -61,7 +81,38 @@ namespace ZeiControl
             UptimeTextBlock = UptimeTBox;
             CellVoltageTextBlock = CVoltageTBox;
 
+            SaveDataButton = SaveSensorDataButton;
+            ClearDataButton = ClearSessionDataButton;
+            SettingsButton = SensorSettingsButton;
 
+            MoveForwardButton = ForwardButton;
+            MoveLeftButton = LeftButton;
+            MoveRightButton = RightButton;
+            MoveReverseButton = ReverseButton;
+            MoveReverseLeftButton = ReverseLeftButton;
+            MoveReverseRightButton = ReverseRightButton;
+            BuzzerEnableButton = BuzzerButton;
+            PLEDEnableButton = PowerLEDButton;
+            StopEnableButton = FullStopButton;
+
+            EnableCameraButton = CameraButton;
+            ZeroOutAxisButton = ZeroOutAxis;
+
+            HelperMethods.ChangeEnablePropertyWiFi(false);
+
+
+            SQLiteConnection connection;
+            connection = DatabaseHandling.CreateConnection();
+            try
+            {
+                DatabaseHandling.ClearSessionDataFromTemp(connection);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("Exception encountered: ");
+                Trace.WriteLine(ex.Message);
+            }
+            connection.Close();
         }
 
         //Move window override
