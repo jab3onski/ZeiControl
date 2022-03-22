@@ -24,7 +24,7 @@
             </Border.Clip>
 
             <StackPanel Orientation="Vertical">
-                <Label HorizontalAlignment="Center" Content="Update Intervals"/>
+                <Label HorizontalAlignment="Center" Content="Update Intervals" Margin="5"/>
                 <Image ToolTipService.InitialShowDelay="500" ToolTipService.ShowDuration="10000" Height="16" Width="16" Source="pack://application:,,,/Images/ToolTipIcon.png">
                     <Image.ToolTip>
                         <ToolTip HasDropShadow="True">
@@ -38,7 +38,7 @@
                 <TextBox x:Name="ProximityIntervalBox" Width="75" PreviewTextInput="ProximityIntervalBox_PreviewTextInput"/>
                 <Label HorizontalAlignment="Center" Content="Temperature Sensor Interval"/>
                 <TextBox x:Name="TemperatureIntervalBox" Width="75" PreviewTextInput="TemperatureIntervalBox_PreviewTextInput"/>
-                <Grid Margin="0,55,0,0">
+                <Grid Margin="0,50,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>

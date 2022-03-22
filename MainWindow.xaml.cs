@@ -28,9 +28,11 @@ namespace ZeiControl
         private bool YsliderDragStarted;
 
         public static int SensorUpdatesCounter { get; set; }
+        public static bool AutonomousDrivingEnabled { get; set; }
 
-        public static Image StreamSourceFrame { get; set; }
-        public static ListView DbListView { get; set; }
+        public static Image StreamSourceFrame { get; set; }             //Image object for stream display
+        public static ListView DbListView { get; set; }                 //Sensor Updates ListView
+        public static ListView NotificationsListView { get; set; }      //Notifications ListView
         public static TextBlock FrontSensorTextBlock { get; set; }
         public static TextBlock LeftSensorTextBlock { get; set; }
         public static TextBlock RightSensorTextBlock { get; set; }
@@ -57,7 +59,9 @@ namespace ZeiControl
         public static ToggleButton EnableCameraButton { get; set; }
         public static Button ZeroOutAxisButton { get; set; }
 
+        public static Button WiFiConnectButton { get; set; }
         public static Button CloseConnectionButton { get; set; }
+        public static Button AutonomousDrivingButton { get; set; }
 
         public MainWindow()
         {
@@ -66,20 +70,25 @@ namespace ZeiControl
             XsliderDragStarted = false;
             YsliderDragStarted = false;
 
+            WiFiConnectButton = ConnectButton;
+            AutonomousDrivingButton = ExplorationModeButton;
+
             Xslider = SliderXAxis;
             Yslider = SliderYAxis;
             SensorUpdatesCounter = 0;
+            AutonomousDrivingEnabled = false;
 
             CloseConnectionButton = DisconnectButton;
 
             StreamSourceFrame = CameraFrameImage;
             DbListView = DatabaseItemsList;
+            NotificationsListView = NotificationItemsList;
             FrontSensorTextBlock = FrontProxTBlock;
             LeftSensorTextBlock = LeftProxTBlock;
             RightSensorTextBlock = RightProxTBlock;
-            RRSITextBlock = RRSITBox;
-            UptimeTextBlock = UptimeTBox;
-            CellVoltageTextBlock = CVoltageTBox;
+            RRSITextBlock = RSSITBlock;
+            UptimeTextBlock = UptimeTBlock;
+            CellVoltageTextBlock = CVoltageTBlock;
 
             SaveDataButton = SaveSensorDataButton;
             ClearDataButton = ClearSessionDataButton;
@@ -98,7 +107,7 @@ namespace ZeiControl
             EnableCameraButton = CameraButton;
             ZeroOutAxisButton = ZeroOutAxis;
 
-            HelperMethods.ChangeEnablePropertyWiFi(false);
+            HelperMethods.ChangePropertyVariableWiFi(false);
 
 
             SQLiteConnection connection;
@@ -149,16 +158,17 @@ namespace ZeiControl
         private void CameraEnableUnchecked(object sender, RoutedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(MessagingProtocol.cameraDisablePacket);
+            StreamSourceFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Images/NoImage.png"));
         }
 
 
         //Handle X-axis slider drag event
-        private void SliderXAxis_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        private void SliderXAxis_DragStarted(object sender, DragStartedEventArgs e)
         {
             XsliderDragStarted = true;
         }
 
-        private void SliderXAxis_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        private void SliderXAxis_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(
                 HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x58));
@@ -176,12 +186,12 @@ namespace ZeiControl
         }
 
         //Handle Y-axis slider drag event
-        private void SliderYAxis_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        private void SliderYAxis_DragStarted(object sender, DragStartedEventArgs e)
         {
             YsliderDragStarted = true;
         }
 
-        private void SliderYAxis_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        private void SliderYAxis_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(
                 HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x59));
@@ -331,6 +341,20 @@ namespace ZeiControl
             SensorSettingsWindow sensorSettingsWindow = new();
             sensorSettingsWindow.Owner = this;
             sensorSettingsWindow.Show();
+        }
+
+        private void ExplorationModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!AutonomousDrivingEnabled)
+            {
+                ExplorationModeWindow explorationModeWindow = new();
+                explorationModeWindow.Owner = this;
+                explorationModeWindow.Show();
+            }
+            else
+            {
+                MessagingProtocol.ProcessOutgoingData(MessagingProtocol.autonomousDrivingDisablePacket);
+            }
         }
     }
 }

@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace ZeiControl.Core
 {
     class HelperMethods
     {
-        public static int RescaleToAnalogValue(double initialValue)
+        public static byte RescaleToByteValue(double initialValue)
         {
-            initialValue += 90;
-            int scaled = (int)(initialValue / 180 * 255);
+            byte scaled = (byte)(initialValue / 110 * 255);
 
             return scaled;
         }
@@ -52,7 +54,7 @@ namespace ZeiControl.Core
             return arrayOfBytes;
         }
 
-        public static void ChangeEnablePropertyWiFi(bool isEnabled)
+        public static void ChangePropertyVariableWiFi(bool isEnabled)
         {
             if (isEnabled)
             {
@@ -77,6 +79,9 @@ namespace ZeiControl.Core
                 MainWindow.Yslider.IsEnabled = true;
 
                 MainWindow.CloseConnectionButton.IsEnabled = true;
+                MainWindow.WiFiConnectButton.IsEnabled = false;
+                MainWindow.WiFiConnectButton.Content = "Connected!";
+                MainWindow.AutonomousDrivingButton.IsEnabled = true;
             }
 
             else
@@ -101,9 +106,54 @@ namespace ZeiControl.Core
                 MainWindow.Xslider.IsEnabled = false;
                 MainWindow.Yslider.IsEnabled = false;
 
+                MainWindow.FrontSensorTextBlock.Text = "---";
+                MainWindow.LeftSensorTextBlock.Text = "---";
+                MainWindow.RightSensorTextBlock.Text = "---";
+                MainWindow.RRSITextBlock.Text = "---";
+                MainWindow.RRSITextBlock.Foreground = Brushes.Black;
+                MainWindow.CellVoltageTextBlock.Text = "---";
+                MainWindow.CellVoltageTextBlock.Foreground = Brushes.Black;
+                MainWindow.UptimeTextBlock.Text = "---";
+
                 MainWindow.CloseConnectionButton.IsEnabled = false;
+                MainWindow.WiFiConnectButton.IsEnabled = true;
+                MainWindow.WiFiConnectButton.Content = "Connect";
+                MainWindow.AutonomousDrivingButton.IsEnabled = false;
+
+                //Variables reset
+                MainWindow.EnableCameraButton.IsChecked = false;
+
+                MessagingProtocol.UserNotifiedVoltage10 = false;
+                MessagingProtocol.UserNotifiedVoltage25 = false;
+                MessagingProtocol.UserNotifiedVoltage50 = false;
+
+                MessagingProtocol.UserNotifiedRSSILow = false;
+                MessagingProtocol.UserNotifiedRSSIVeryLow = false;
+
+                MessagingProtocol.UserNotifiedUptimeOverflow = false;
             }
         }
 
+        public static void FlushSocketBuffer(TcpClient tcpClient)
+        {
+            if (tcpClient.Available > 0)
+            {
+                try
+                {
+                    NetworkStream networkStream = tcpClient.GetStream();
+                    if (networkStream.CanRead)
+                    {
+                        byte[] receivedBytes = new byte[tcpClient.Available];
+                        networkStream.Read(receivedBytes, 0, tcpClient.Available);
+                        Trace.WriteLine("Flushed buffer size: " + receivedBytes.Length + " bytes");
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Trace.WriteLine("Internal error: ");
+                    Trace.WriteLine(exc.Message);
+                }
+            }
+        }
     }
 }

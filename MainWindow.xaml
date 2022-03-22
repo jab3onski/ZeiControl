@@ -42,6 +42,17 @@
                     <ListView Height="575" x:Name="DatabaseItemsList" Margin="10">
                         <ListView.View>
                             <GridView>
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="TextElement.Foreground" Value="Black"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </GridView.ColumnHeaderContainerStyle>
+                                
                                 <GridViewColumn Width="90" Header="Sensor Type" DisplayMemberBinding="{Binding SensorType}"/>
                                 <GridViewColumn Width="40" Header="Value" DisplayMemberBinding="{Binding SensorValue}"/>
                                 <GridViewColumn Width="190" Header="Captured" DisplayMemberBinding="{Binding DateTimeValue}"/>
@@ -75,7 +86,7 @@
                 </Border.Clip>
                 <Canvas>
                     <Image x:Name="CameraFrameImage" Source="pack://application:,,,/Images/NoImage.png"/>
-                    <ToggleButton x:Name="CameraButton" Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
+                    <ToggleButton Width="50" x:Name="CameraButton" Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
                     <Slider 
                         x:Name="SliderXAxis"
                         Value="90"
@@ -160,12 +171,12 @@
                     <StackPanel Width="130" Margin="10" HorizontalAlignment="Right" Orientation="Vertical">
                         <Label FontWeight="Bold" HorizontalAlignment="Center" Content="Robot Diagnostics"/>
                         <StackPanel Margin="0,10,0,0" Orientation="Vertical" VerticalAlignment="Center">
-                            <Label HorizontalAlignment="Center" Content="RRSI"/>
-                            <TextBlock x:Name="RRSITBox" HorizontalAlignment="Center" Text="---"/>
-                            <Label HorizontalAlignment="Center" Content="Uptime"/>
-                            <TextBlock x:Name="UptimeTBox" HorizontalAlignment="Center" Text="---"/>
+                            <Label HorizontalAlignment="Center" Content="RSSI"/>
+                            <TextBlock x:Name="RSSITBlock" HorizontalAlignment="Center" Text="---"/>
                             <Label HorizontalAlignment="Center" Content="Cell Voltage"/>
-                            <TextBlock x:Name="CVoltageTBox" HorizontalAlignment="Center" Text="---"/>
+                            <TextBlock x:Name="CVoltageTBlock" HorizontalAlignment="Center" Text="---"/>
+                            <Label HorizontalAlignment="Center" Content="Uptime"/>
+                            <TextBlock x:Name="UptimeTBlock" HorizontalAlignment="Center" Text="---"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -182,8 +193,19 @@
                     <ListView Height="575" x:Name="NotificationItemsList" Margin="10">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="90" Header="Severity"/>
-                                <GridViewColumn Width="230" Header="Message"/>
+                                <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="TextElement.Foreground" Value="Black"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                </GridView.ColumnHeaderContainerStyle>
+                            
+                                <GridViewColumn Width="90" Header="Severity" DisplayMemberBinding="{Binding Severity}"/>
+                                <GridViewColumn Width="230" Header="Message" DisplayMemberBinding="{Binding Message}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -200,20 +222,26 @@
                         Text="ZeiControl"
                         HorizontalAlignment="Center"
                         FontSize="28"
-                        Margin="0,10,0,0"/>
+                        Margin="0,10,0,5"/>
                     <Button
-                        Width="100"
+                        x:Name="ConnectButton"
+                        Width="125"
                         Content="Connect"
-                        Margin="0,20,0,0" Click="ConnectButtonClick"/>
+                        Margin="5" Click="ConnectButtonClick"/>
                     <Button
                         x:Name="DisconnectButton"
-                        Width="100"
+                        Width="125"
                         Content="Disconnect"
-                        Margin="0,20,0,0" Click="DisconnectButtonClick"/>
+                        Margin="5" Click="DisconnectButtonClick"/>
+                    <Button
+                        x:Name="ExplorationModeButton"
+                        Width="125"
+                        Content="Exploration Mode"
+                        Margin="5" Click="ExplorationModeButton_Click"/>
                     <Button 
-                        Width="100"
+                        Width="125"
                         Content="Exit"
-                        Margin="0,20,0,0" Click="ExitButtonClick"/>
+                        Margin="5" Click="ExitButtonClick"/>
                 </StackPanel>
             </Border>
 

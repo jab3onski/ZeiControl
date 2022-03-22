@@ -67,7 +67,7 @@ namespace ZeiControl
             if (TextBoxTempInterval.Text.Length > 0 || TextBoxProximityInterval.Text.Length > 0)
             {
                 if (ushort.TryParse(TextBoxTempInterval.Text, out ushort tempInterval) &&
-                    TextBoxTempInterval.Text.Length > 0 && tempInterval >= 500)
+                    TextBoxTempInterval.Text.Length > 0 && (tempInterval >= 500 || tempInterval == 0))
                 {
                     MessagingProtocol.SendMessageTempInterval(tempInterval);
                     LabSuccessful.Visibility = Visibility.Visible;
@@ -75,7 +75,7 @@ namespace ZeiControl
                 }
 
                 if (ushort.TryParse(TextBoxProximityInterval.Text, out ushort proximityInterval) &&
-                    TextBoxProximityInterval.Text.Length > 0 && proximityInterval >= 500)
+                    TextBoxProximityInterval.Text.Length > 0 && (proximityInterval >= 100 || proximityInterval == 0))
                 {
                     MessagingProtocol.SendMessageProximityInterval(proximityInterval);
                     LabSuccessful.Visibility = Visibility.Visible;

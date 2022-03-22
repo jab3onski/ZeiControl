@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -13,6 +15,15 @@ namespace ZeiControl.Core
     class MessagingProtocol
     {
         private bool isTransmittingImage;
+
+        public static bool UserNotifiedVoltage50 { get; set; }
+        public static bool UserNotifiedVoltage25 { get; set; }
+        public static bool UserNotifiedVoltage10 { get; set; }
+
+        public static bool UserNotifiedRSSILow { get; set; }
+        public static bool UserNotifiedRSSIVeryLow { get; set; }
+
+        public static bool UserNotifiedUptimeOverflow { get; set; }
 
         //Protocol move commands
         public static readonly byte[] forwardPacket = { 0x23, 0x4D, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
@@ -35,9 +46,23 @@ namespace ZeiControl.Core
         public static readonly byte[] buzzerOnPacket = { 0x23, 0x42, 0x5F, 0xFF, 0xFF, 0xFF, 0xFF, 0x23 };
         public static readonly byte[] buzzerOffPacket = { 0x23, 0x42, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
 
+        //Autonomous Driving commands
+        public static readonly byte[] autonomousDrivingEnablePacket = { 0x23, 0x41, 0x5F, 0x00, 0x00, 0x00, 0xFF, 0x23 };
+        public static readonly byte[] autonomousDrivingDisablePacket = { 0x23, 0x41, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
+        public static readonly byte[] autonomousDrivingEnableConfPacket = { 0x23, 0x41, 0x5F, 0xFF, 0x00, 0x00, 0xFF, 0x23 };
+        public static readonly byte[] autonomousDrivingDisableConfPacket = { 0x23, 0x41, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
+
         public MessagingProtocol()
         {
             isTransmittingImage = false;
+            UserNotifiedVoltage50 = false;
+            UserNotifiedVoltage25 = false;
+            UserNotifiedVoltage10 = false;
+
+            UserNotifiedRSSILow = false;
+            UserNotifiedRSSIVeryLow = false;
+
+            UserNotifiedUptimeOverflow = false;
         }
 
         public void ProcessIncomingData(byte[] data)
@@ -59,7 +84,7 @@ namespace ZeiControl.Core
                 {
                     byte[] valueData = { data[5], data[6] };
                     double tempValue =
-                        Math.Round(BitConverter.ToUInt16(valueData) * 5.0 / 1024.0 * 100, 2);
+                        Math.Round(BitConverter.ToUInt16(valueData) * 5.0 / 1023.0 * 100, 2);
 
                     SQLiteConnection connection = DatabaseHandling.CreateConnection();
                     try
@@ -136,11 +161,20 @@ namespace ZeiControl.Core
 
                 else if (data[1] == 0x55)
                 {
-                    uint uptimeValue = BitConverter.ToUInt32(valueData32Bit) / 1000;
+                    uint uptimeValue = BitConverter.ToUInt32(valueData32Bit);
                     TimeSpan currentUptime =
-                        TimeSpan.FromSeconds(uptimeValue);
+                        TimeSpan.FromSeconds(uptimeValue / 1000);
 
                     MainWindow.UptimeTextBlock.Text = currentUptime.ToString();
+
+                    if (uptimeValue > 4208567295) // Overflow warning 24hrs before event
+                    {
+                        if (!UserNotifiedUptimeOverflow)
+                        {
+                            MainWindow.NotificationsListView.Items.Insert(0, NotificationData.UptimeNearLimit);
+                            UserNotifiedUptimeOverflow = true;
+                        }
+                    }
                 }
 
                 else if (data[1] == 0x44)
@@ -149,13 +183,101 @@ namespace ZeiControl.Core
 
                     if (data[3] == 0x00 && data[4] == 0x00)
                     {
-                        MainWindow.CellVoltageTextBlock.Text = diagnosticsValue.ToString();
+                        double voltageValue = Math.Round(diagnosticsValue * 8.4 / 1023.0, 2);
+                        MainWindow.CellVoltageTextBlock.Text = 
+                            voltageValue.ToString();
+
+                        byte voltageScale255 = (byte)(diagnosticsValue / 4);
+
+                        byte redValue = voltageScale255;
+                        byte greenValue = (byte)(255 - redValue);
+                        SolidColorBrush voltageColorBrush = new(Color.FromRgb(greenValue, redValue, 0)); // Colors are reversed
+
+                        MainWindow.CellVoltageTextBlock.Foreground = voltageColorBrush;
+
+                        //Safe voltage range for 2S Lithium Polymer battery is 6.0V - 8.4V
+                        if (voltageValue < 6.24)
+                        {
+                            if (!UserNotifiedVoltage10)
+                            {
+                                MainWindow.NotificationsListView.Items.Insert(0,
+                                NotificationData.BatteryBelow10);
+                                UserNotifiedVoltage10 = true;
+                            }
+                        }
+
+                        else if (voltageValue < 6.6)
+                        {
+                            if (!UserNotifiedVoltage25)
+                            {
+                                MainWindow.NotificationsListView.Items.Insert(0,
+                                NotificationData.BatteryBelow25);
+                                UserNotifiedVoltage25 = true;
+                            }
+                        }
+
+                        else if (voltageValue < 7.2)
+                        {
+                            if (!UserNotifiedVoltage50)
+                            {
+                                MainWindow.NotificationsListView.Items.Insert(0,
+                                NotificationData.BatteryBelow50);
+                                UserNotifiedVoltage50 = true;
+                            }
+                        }
                     }
 
                     else if (data[3] == 0x00 && data[4] == 0xFF)
                     {
                         MainWindow.RRSITextBlock.Text =
                             string.Concat("-", diagnosticsValue.ToString(), " dBm");
+
+                        byte RSSIScale255 = HelperMethods.RescaleToByteValue(diagnosticsValue);
+
+                        byte redValue = RSSIScale255;
+                        byte greenValue = (byte)(255 - redValue);
+                        SolidColorBrush RSSIColorBrush = new(Color.FromRgb(redValue, greenValue, 0));
+
+                        MainWindow.RRSITextBlock.Foreground = RSSIColorBrush;
+
+                        if (diagnosticsValue > 100)
+                        {
+                            if (!UserNotifiedRSSIVeryLow)
+                            {
+                                MainWindow.NotificationsListView.Items.Insert(0, NotificationData.RSSIVeryLow);
+                                UserNotifiedRSSIVeryLow = true;
+                            }
+                        }
+                        else if (diagnosticsValue > 85)
+                        {
+                            if (!UserNotifiedRSSILow)
+                            {
+                                MainWindow.NotificationsListView.Items.Insert(0, NotificationData.RSSILow);
+                                UserNotifiedRSSILow = true;
+                            }
+                        }
+                    }
+                }
+
+                else if (data[1] == 0x41)
+                {
+                    if (data[3] == 0xFF)
+                    {
+                        if (data[6] == 0xFF)
+                        {
+                            MainWindow.AutonomousDrivingButton.Content = "Running...";
+                            MainWindow.AutonomousDrivingButton.IsEnabled = false;
+                            MainWindow.EnableCameraButton.IsChecked = false;
+                            MainWindow.EnableCameraButton.IsEnabled = false;
+                            MainWindow.NotificationsListView.Items.Insert(0, NotificationData.AutonomousDrivingActive);
+                        }
+                        else if (data[6] == 0x00)
+                        {
+                            MainWindow.AutonomousDrivingButton.Content = "Exploration Mode";
+                            MainWindow.AutonomousDrivingButton.IsEnabled = true;
+                            MainWindow.EnableCameraButton.IsEnabled = true;
+                            MainWindow.NotificationsListView.Items.Insert(0, NotificationData.AutonomousDrivingInactive);
+                        }
                     }
                 }
             }
@@ -164,7 +286,11 @@ namespace ZeiControl.Core
                 isTransmittingImage = false;
 
                 //Update image object to received frame
-                MainWindow.StreamSourceFrame.Source = (BitmapSource)new ImageSourceConverter().ConvertFrom(data);
+                if (MainWindow.EnableCameraButton.IsChecked == true)
+                {
+                    MainWindow.StreamSourceFrame.Source =
+                        (BitmapSource)new ImageSourceConverter().ConvertFrom(data);
+                }
 
                 NetworkHandling.rxThreshold = 8;
             }
@@ -177,8 +303,6 @@ namespace ZeiControl.Core
 
         public static void ProcessOutgoingData(byte[] data)
         {
-            Trace.WriteLine(BitConverter.ToString(data));
-
             if (NetworkHandling.isConnected)
             {
                 NetworkHandling.txMessageQueue.Add(data);

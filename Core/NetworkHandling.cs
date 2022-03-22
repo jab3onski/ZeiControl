@@ -20,9 +20,14 @@ namespace ZeiControl.Core
         public static TcpClient tcpClient;
 
         public static bool isConnected;
-        public static int rxThreshold = 8;
+        public static int rxThreshold;
 
         private readonly MessagingProtocol messagingProtocol = new();
+
+        public NetworkHandling()
+        {
+            rxThreshold = 8;
+        }
 
         public void StartConnectionStream()
         {
@@ -35,15 +40,21 @@ namespace ZeiControl.Core
                     tcpClient.Connect(hostEndPoint);
                     isConnected = true;
 
+                    HelperMethods.FlushSocketBuffer(tcpClient);
+                    txMessageQueue.Clear();
+
                     _ = SendMessageTask();
                     _ = ReceiveMessageTask();
 
-                    HelperMethods.ChangeEnablePropertyWiFi(true);
+                    HelperMethods.ChangePropertyVariableWiFi(true);
+
+                    MainWindow.NotificationsListView.Items.Insert(0, NotificationData.LoginAttemptSuccessfull);
                 }
                 catch (Exception exc)
                 {
                     Trace.WriteLine("Internal error: ");
                     Trace.WriteLine(exc.Message);
+                    MainWindow.NotificationsListView.Items.Insert(0, NotificationData.LoginAttemptFailed);
                     isConnected = false;
                 }
             }
@@ -62,7 +73,8 @@ namespace ZeiControl.Core
                     tcpClient.Client.Close();
 
                     isConnected = false;
-                    HelperMethods.ChangeEnablePropertyWiFi(false);
+                    HelperMethods.ChangePropertyVariableWiFi(false);
+                    MainWindow.NotificationsListView.Items.Insert(0, NotificationData.WiFiDisconnected);
                 }
                 catch (Exception exc)
                 {
@@ -82,15 +94,15 @@ namespace ZeiControl.Core
                 {
                     try
                     {
-                        if (networkStream.CanWrite)
-                        {
-                            networkStream.Write(txMessageQueue[0]);
-                        }
+                        networkStream.Write(txMessageQueue[0]);
+                        Trace.WriteLine(BitConverter.ToString(txMessageQueue[0]));
                     }
                     catch (Exception exc)
                     {
                         Trace.WriteLine("Internal error: ");
                         Trace.WriteLine(exc.Message);
+                        MainWindow.NotificationsListView.Items.Insert(0, NotificationData.WiFiInterrupted);
+                        HelperMethods.ChangePropertyVariableWiFi(false);
                     }
                     finally
                     {
@@ -130,7 +142,6 @@ namespace ZeiControl.Core
 
         private void OnDataReceived(byte[] data)
         {
-            //Trace.WriteLine(BitConverter.ToString(data));
             messagingProtocol.ProcessIncomingData(data);
         }
     }
