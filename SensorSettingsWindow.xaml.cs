@@ -20,14 +20,16 @@ namespace ZeiControl
     {
         private static readonly Regex allowOnlyNumbersRegex = new("[^0-9]+");
 
-        public TextBox TextBoxTempInterval { get; set; }
-        public TextBox TextBoxProximityInterval { get; set; }
+        public static TextBox TextBoxTempInterval { get; set; }
+        public static TextBox TextBoxProximityInterval { get; set; }
         public Label LabSuccessful { get; set; }
         public Label LabFailed { get; set; }
 
         public SensorSettingsWindow()
         {
             InitializeComponent();
+
+            MessagingProtocol.ProcessOutgoingData(MessagingProtocol.requestTempValuePacket);
 
             TextBoxTempInterval = TemperatureIntervalBox;
             TextBoxProximityInterval = ProximityIntervalBox;

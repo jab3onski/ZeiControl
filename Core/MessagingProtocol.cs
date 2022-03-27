@@ -46,6 +46,10 @@ namespace ZeiControl.Core
         public static readonly byte[] buzzerOnPacket = { 0x23, 0x42, 0x5F, 0xFF, 0xFF, 0xFF, 0xFF, 0x23 };
         public static readonly byte[] buzzerOffPacket = { 0x23, 0x42, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
 
+        //Sensor Commands
+        public static readonly byte[] requestTempValuePacket = { 0x23, 0x49, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
+        public static readonly byte[] requestProxValuePacket = { 0x23, 0x49, 0x5F, 0xFF, 0x00, 0x00, 0xFF, 0x23 };
+
         //Autonomous Driving commands
         public static readonly byte[] autonomousDrivingEnablePacket = { 0x23, 0x41, 0x5F, 0x00, 0x00, 0x00, 0xFF, 0x23 };
         public static readonly byte[] autonomousDrivingDisablePacket = { 0x23, 0x41, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
@@ -185,9 +189,9 @@ namespace ZeiControl.Core
                     {
                         double voltageValue = Math.Round(diagnosticsValue * 8.4 / 1023.0, 2);
                         MainWindow.CellVoltageTextBlock.Text = 
-                            voltageValue.ToString();
+                            string.Concat(voltageValue.ToString(), " V");
 
-                        byte voltageScale255 = (byte)(diagnosticsValue / 4);
+                        byte voltageScale255 = HelperMethods.RescaleToByteValue(6, 8.4, 0, 255, voltageValue);
 
                         byte redValue = voltageScale255;
                         byte greenValue = (byte)(255 - redValue);
@@ -232,7 +236,7 @@ namespace ZeiControl.Core
                         MainWindow.RRSITextBlock.Text =
                             string.Concat("-", diagnosticsValue.ToString(), " dBm");
 
-                        byte RSSIScale255 = HelperMethods.RescaleToByteValue(diagnosticsValue);
+                        byte RSSIScale255 = HelperMethods.RescaleToByteValue(50, 105, 0, 255, diagnosticsValue);
 
                         byte redValue = RSSIScale255;
                         byte greenValue = (byte)(255 - redValue);
@@ -266,7 +270,6 @@ namespace ZeiControl.Core
                         if (data[6] == 0xFF)
                         {
                             MainWindow.AutonomousDrivingButton.Content = "Running...";
-                            MainWindow.AutonomousDrivingButton.IsEnabled = false;
                             MainWindow.EnableCameraButton.IsChecked = false;
                             MainWindow.EnableCameraButton.IsEnabled = false;
                             MainWindow.NotificationsListView.Items.Insert(0, NotificationData.AutonomousDrivingActive);
@@ -274,9 +277,25 @@ namespace ZeiControl.Core
                         else if (data[6] == 0x00)
                         {
                             MainWindow.AutonomousDrivingButton.Content = "Exploration Mode";
-                            MainWindow.AutonomousDrivingButton.IsEnabled = true;
                             MainWindow.EnableCameraButton.IsEnabled = true;
                             MainWindow.NotificationsListView.Items.Insert(0, NotificationData.AutonomousDrivingInactive);
+                        }
+                    }
+                }
+
+                else if (data[1] == 0x49)
+                {
+                    ushort intervalValue = BitConverter.ToUInt16(valueData16Bit);
+
+                    if (data[3] == 0x00)
+                    {
+                        if (data[4] == 0x00)
+                        {
+                            SensorSettingsWindow.TextBoxTempInterval.Text = intervalValue.ToString();
+                        }
+                        else if (data[4] == 0xFF)
+                        {
+                            SensorSettingsWindow.TextBoxProximityInterval.Text = intervalValue.ToString();
                         }
                     }
                 }
@@ -311,12 +330,12 @@ namespace ZeiControl.Core
 
         public static void SendMessageTempInterval(int value)
         {
-            ProcessOutgoingData(HelperMethods.TransformAsBytePacket16Bit(value, 0x49, 0x00, 0x00));
+            ProcessOutgoingData(HelperMethods.TransformToBytePacket16Bit(value, 0x49, 0x00, 0x00));
         }
 
         public static void SendMessageProximityInterval(int value)
         {
-            ProcessOutgoingData(HelperMethods.TransformAsBytePacket16Bit(value, 0x49, 0x00, 0xFF));
+            ProcessOutgoingData(HelperMethods.TransformToBytePacket16Bit(value, 0x49, 0x00, 0xFF));
         }
     }
 }

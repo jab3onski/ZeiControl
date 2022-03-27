@@ -142,6 +142,7 @@ namespace ZeiControl.Core
 
         private void OnDataReceived(byte[] data)
         {
+            Trace.WriteLine(BitConverter.ToString(data));
             messagingProtocol.ProcessIncomingData(data);
         }
     }

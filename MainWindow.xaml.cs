@@ -26,6 +26,11 @@ namespace ZeiControl
 
         private bool XsliderDragStarted;
         private bool YsliderDragStarted;
+        private bool isFocusOnControlPanel;
+        private bool isReversePressed;
+        private bool isForwardPressed;
+        private bool isRelayOpen;
+        private bool isFlashlightOn;
 
         public static int SensorUpdatesCounter { get; set; }
         public static bool AutonomousDrivingEnabled { get; set; }
@@ -62,6 +67,7 @@ namespace ZeiControl
         public static Button WiFiConnectButton { get; set; }
         public static Button CloseConnectionButton { get; set; }
         public static Button AutonomousDrivingButton { get; set; }
+        public static Button ExitButton { get; set; }
 
         public MainWindow()
         {
@@ -69,9 +75,15 @@ namespace ZeiControl
 
             XsliderDragStarted = false;
             YsliderDragStarted = false;
+            isFocusOnControlPanel = false;
+            isReversePressed = false;
+            isRelayOpen = false;
+            isFlashlightOn = false;
+            isForwardPressed = false;
 
             WiFiConnectButton = ConnectButton;
             AutonomousDrivingButton = ExplorationModeButton;
+            ExitButton = ExitAppButton;
 
             Xslider = SliderXAxis;
             Yslider = SliderYAxis;
@@ -144,7 +156,6 @@ namespace ZeiControl
 
         private void ExitButtonClick(object sender, RoutedEventArgs e)
         {
-            nwHandler.StopConnectionStream();
             Application.Current.Shutdown();
         }
 
@@ -171,7 +182,7 @@ namespace ZeiControl
         private void SliderXAxis_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(
-                HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x58));
+                HelperMethods.TransformToBytePacket32Bit(((Slider)sender).Value, 0x58));
 
             XsliderDragStarted = false;
         }
@@ -181,7 +192,7 @@ namespace ZeiControl
             if (!XsliderDragStarted)
             {
                 MessagingProtocol.ProcessOutgoingData(
-                    HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x58));
+                    HelperMethods.TransformToBytePacket32Bit(((Slider)sender).Value, 0x58));
             }
         }
 
@@ -194,7 +205,7 @@ namespace ZeiControl
         private void SliderYAxis_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             MessagingProtocol.ProcessOutgoingData(
-                HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x59));
+                HelperMethods.TransformToBytePacket32Bit(((Slider)sender).Value, 0x59));
 
             YsliderDragStarted = false;
         }
@@ -204,7 +215,7 @@ namespace ZeiControl
             if (!YsliderDragStarted)
             {
                 MessagingProtocol.ProcessOutgoingData(
-                    HelperMethods.TransformAsBytePacket32Bit(((Slider)sender).Value, 0x59));
+                    HelperMethods.TransformToBytePacket32Bit(((Slider)sender).Value, 0x59));
             }
         }
 
@@ -354,6 +365,125 @@ namespace ZeiControl
             else
             {
                 MessagingProtocol.ProcessOutgoingData(MessagingProtocol.autonomousDrivingDisablePacket);
+            }
+        }
+
+        private void MainControlPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (NetworkHandling.isConnected)
+            {
+                SolidColorBrush mouseOverPanelBrush = new(Color.FromRgb(205, 230, 255));
+                MainControlPanel.Background = mouseOverPanelBrush;
+                isFocusOnControlPanel = true;
+            }
+        }
+
+        private void MainControlPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (NetworkHandling.isConnected)
+            {
+                MainControlPanel.Background = Brushes.White;
+                isFocusOnControlPanel = false;
+            }
+        }
+
+        private void ApplicationWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (isFocusOnControlPanel && !e.IsRepeat)
+            {
+                if (e.Key == Key.W)
+                {
+                    isForwardPressed = true;
+                    MessagingProtocol.ProcessOutgoingData(MessagingProtocol.forwardPacket);
+                }
+                else if (e.Key == Key.A)
+                {
+                    if (isReversePressed)
+                    {
+                        MessagingProtocol.ProcessOutgoingData(MessagingProtocol.reverseLeftPacket);
+                    }
+                    else
+                    {
+                        MessagingProtocol.ProcessOutgoingData(MessagingProtocol.leftPacket);
+                    }
+                }
+                else if (e.Key == Key.S)
+                {
+                    isReversePressed = true;
+                    MessagingProtocol.ProcessOutgoingData(MessagingProtocol.reversePacket);
+                }
+                else if (e.Key == Key.D)
+                {
+                    if (isReversePressed)
+                    {
+                        MessagingProtocol.ProcessOutgoingData(MessagingProtocol.reverseRightPacket);
+                    }
+                    else
+                    {
+                        MessagingProtocol.ProcessOutgoingData(MessagingProtocol.rightPacket);
+                    }
+                }
+                else if (e.Key == Key.F)
+                {
+                    if (isFlashlightOn)
+                    {
+                        MessagingProtocol.ProcessOutgoingData(MessagingProtocol.powerLEDoffPacket);
+                        isFlashlightOn = false;
+                    }
+                    else
+                    {
+                        MessagingProtocol.ProcessOutgoingData(MessagingProtocol.powerLEDonPacket);
+                        isFlashlightOn = true;
+                    }
+                }
+                else if (e.Key == Key.H)
+                {
+                    MessagingProtocol.ProcessOutgoingData(MessagingProtocol.buzzerOnPacket);
+                }
+                else if (e.Key == Key.Escape)
+                {
+                    if (isRelayOpen)
+                    {
+                        MessagingProtocol.ProcessOutgoingData(MessagingProtocol.emergencyOverPacket);
+                        isRelayOpen = false;
+                    }
+                    else
+                    {
+                        MessagingProtocol.ProcessOutgoingData(MessagingProtocol.emergencyStopPacket);
+                        isRelayOpen = true;
+                    }
+                }
+            }
+        }
+
+        private void ApplicationWindow_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (!e.IsRepeat)
+            {
+                if (isReversePressed && e.Key is Key.A or Key.D)
+                {
+                    MessagingProtocol.ProcessOutgoingData(MessagingProtocol.reversePacket);
+                }
+                else if (isForwardPressed && e.Key is Key.A or Key.D)
+                {
+                    MessagingProtocol.ProcessOutgoingData(MessagingProtocol.forwardPacket);
+                }
+                else if (e.Key is Key.W or Key.A or Key.S or Key.D)
+                {
+                    if (e.Key is Key.S)
+                    {
+                        isReversePressed = false;
+                    }
+                    else if (e.Key is Key.W)
+                    {
+                        isForwardPressed = false;
+                    }
+                    MessagingProtocol.ProcessOutgoingData(MessagingProtocol.stopPacket);
+                }
+                else if (e.Key is Key.H)
+                {
+                    MessagingProtocol.ProcessOutgoingData(MessagingProtocol.buzzerOffPacket);
+                }
             }
         }
     }

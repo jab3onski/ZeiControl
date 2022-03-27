@@ -12,14 +12,17 @@ namespace ZeiControl.Core
 {
     class HelperMethods
     {
-        public static byte RescaleToByteValue(double initialValue)
+        public static byte RescaleToByteValue(double a0, double a1, double b0, double b1, double a)
         {
-            byte scaled = (byte)(initialValue / 110 * 255);
+            byte scaled = (byte)(b0
+                + ((b1 - b0)
+                * ((a - a0)
+                / (a1 - a0))));
 
             return scaled;
         }
 
-        public static byte[] TransformAsBytePacket32Bit(double value, byte commandByte)
+        public static byte[] TransformToBytePacket32Bit(double value, byte commandByte)
         {
             byte[] arrayOfBytes = new byte[8];
             byte[] valueByteArray = BitConverter.GetBytes((uint)value);
@@ -36,7 +39,7 @@ namespace ZeiControl.Core
             return arrayOfBytes;
         }
 
-        public static byte[] TransformAsBytePacket16Bit(double value,
+        public static byte[] TransformToBytePacket16Bit(double value,
             byte commandByte, byte deviceByte1, byte deviceByte2)
         {
             byte[] arrayOfBytes = new byte[8];
@@ -82,6 +85,7 @@ namespace ZeiControl.Core
                 MainWindow.WiFiConnectButton.IsEnabled = false;
                 MainWindow.WiFiConnectButton.Content = "Connected!";
                 MainWindow.AutonomousDrivingButton.IsEnabled = true;
+                MainWindow.ExitButton.IsEnabled = false;
             }
 
             else
@@ -119,6 +123,7 @@ namespace ZeiControl.Core
                 MainWindow.WiFiConnectButton.IsEnabled = true;
                 MainWindow.WiFiConnectButton.Content = "Connect";
                 MainWindow.AutonomousDrivingButton.IsEnabled = false;
+                MainWindow.ExitButton.IsEnabled = true;
 
                 //Variables reset
                 MainWindow.EnableCameraButton.IsChecked = false;
@@ -126,6 +131,7 @@ namespace ZeiControl.Core
                 MessagingProtocol.UserNotifiedVoltage10 = false;
                 MessagingProtocol.UserNotifiedVoltage25 = false;
                 MessagingProtocol.UserNotifiedVoltage50 = false;
+                NetworkHandling.isConnected = false;
 
                 MessagingProtocol.UserNotifiedRSSILow = false;
                 MessagingProtocol.UserNotifiedRSSIVeryLow = false;

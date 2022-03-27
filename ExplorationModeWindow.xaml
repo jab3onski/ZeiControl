@@ -24,16 +24,47 @@
                 <Border.Clip>
                     <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,195,320"></RectangleGeometry>
                 </Border.Clip>
-                
+
                 <StackPanel Orientation="Vertical">
-                    <Label HorizontalAlignment="Center" Content="Autonomous Exploration" Margin="5"/>
-                    <UniformGrid Columns="2">
+                    <Label FontSize="15" HorizontalAlignment="Center" Content="Autonomous Exploration" Margin="5"/>
+                    <Image ToolTipService.InitialShowDelay="500" ToolTipService.ShowDuration="10000" Height="16" Width="16" Source="pack://application:,,,/Images/ToolTipIcon.png">
+                        <Image.ToolTip>
+                            <ToolTip HasDropShadow="True">
+                                <TextBlock Width="200" TextWrapping="Wrap">
+                                    To be added!
+                                </TextBlock>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
+                    <StackPanel Margin="5,10,0,0" Orientation="Vertical">
+                        <Label Content="Capture interval:"/>
+                        <ComboBox x:Name="CaptureIntervalBox" Margin="5,5,0,0" HorizontalAlignment="Left" Width="100">
+                            <ComboBoxItem Content="5s"/>
+                            <ComboBoxItem Content="10s"/>
+                            <ComboBoxItem Content="15s" IsSelected="True"/>
+                            <ComboBoxItem Content="20s"/>
+                            <ComboBoxItem Content="25s"/>
+                            <ComboBoxItem Content="30s"/>
+                        </ComboBox>
+                        <Label Content="Picture quality:"/>
+                        <ComboBox x:Name="PictureQualityBox" Margin="5,5,0,0" HorizontalAlignment="Left" Width="100">
+                            <ComboBoxItem Content="High"/>
+                            <ComboBoxItem Content="Medium" IsSelected="True"/>
+                            <ComboBoxItem Content="Low"/>
+                        </ComboBox>
+                        <Label Content="Turn preset:"/>
+                        <ComboBox x:Name="TurnPresetBox" Margin="5,5,0,0" HorizontalAlignment="Left" Width="100">
+                            <ComboBoxItem Content="Sharp"/>
+                            <ComboBoxItem Content="Medium" IsSelected="True"/>
+                            <ComboBoxItem Content="Light"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <UniformGrid Columns="2" Margin="0,50,0,0">
                         <Button Margin="5" x:Name="StartButton" Content="Start" Click="StartButton_Click"/>
                         <Button Margin="5" x:Name="CloseWindowButton" Content="Exit" Click="CloseWindowButton_Click"/>
                     </UniformGrid>
                 </StackPanel>
             </Border>
         </StackPanel>
-
     </Border>
 </Window>
