@@ -269,7 +269,8 @@ namespace ZeiControl.Core
                     {
                         if (data[6] == 0xFF)
                         {
-                            MainWindow.AutonomousDrivingButton.Content = "Running...";
+                            MainWindow.AutonomousDrivingButton.Content = "Disable EM";
+                            MainWindow.AutonomousDrivingEnabled = true;
                             MainWindow.EnableCameraButton.IsChecked = false;
                             MainWindow.EnableCameraButton.IsEnabled = false;
                             MainWindow.NotificationsListView.Items.Insert(0, NotificationData.AutonomousDrivingActive);
@@ -277,6 +278,7 @@ namespace ZeiControl.Core
                         else if (data[6] == 0x00)
                         {
                             MainWindow.AutonomousDrivingButton.Content = "Exploration Mode";
+                            MainWindow.AutonomousDrivingEnabled = false;
                             MainWindow.EnableCameraButton.IsEnabled = true;
                             MainWindow.NotificationsListView.Items.Insert(0, NotificationData.AutonomousDrivingInactive);
                         }

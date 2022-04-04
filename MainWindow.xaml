@@ -89,8 +89,10 @@
                 </Border.Clip>
                 <Canvas>
                     <Image x:Name="CameraFrameImage" Source="pack://application:,,,/Images/NoImage.png"/>
-                    <ToggleButton Width="50" x:Name="CameraButton" Margin="10,10,0,0" Content="Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
-                    <Slider 
+                    <ToggleButton Width="80" x:Name="CameraButton" Canvas.Top="10" Canvas.Left="10" Content="Cam Enable" Checked="CameraEnableChecked" Unchecked="CameraEnableUnchecked"/>
+                    <Button Width="80" x:Name="CaptureSDButton" Canvas.Bottom="10" Canvas.Left="10" Content="Capture SD" Click="CaptureSDButton_Click"/>
+                    <Button Width="80" x:Name="CaptureHDButton" Canvas.Bottom="10" Canvas.Left="100" Content="Capture HD" Click="CaptureHDButton_Click"/>
+                    <Slider
                         x:Name="SliderXAxis"
                         Value="90"
                         Minimum="0" 
@@ -107,9 +109,9 @@
                     <Slider 
                         x:Name="SliderYAxis"
                         Orientation="Vertical"
-                        Value="90"
+                        Value="78"
                         Minimum="0" 
-                        Maximum="180" 
+                        Maximum="155" 
                         Canvas.Bottom="30" 
                         Canvas.Right="10" 
                         Height="200"

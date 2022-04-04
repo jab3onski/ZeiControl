@@ -95,7 +95,6 @@ namespace ZeiControl.Core
                     try
                     {
                         networkStream.Write(txMessageQueue[0]);
-                        Trace.WriteLine(BitConverter.ToString(txMessageQueue[0]));
                     }
                     catch (Exception exc)
                     {
@@ -142,7 +141,10 @@ namespace ZeiControl.Core
 
         private void OnDataReceived(byte[] data)
         {
-            Trace.WriteLine(BitConverter.ToString(data));
+            if (data.Length < 10)
+            {
+                Trace.WriteLine(BitConverter.ToString(data));
+            }
             messagingProtocol.ProcessIncomingData(data);
         }
     }

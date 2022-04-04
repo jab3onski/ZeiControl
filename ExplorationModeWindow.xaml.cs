@@ -48,6 +48,8 @@ namespace ZeiControl
                 HelperMethods.TransformToBytePacket16Bit(selectedTurnSharpness, 0x46, 0xFF, 0x00));
 
             MessagingProtocol.ProcessOutgoingData(MessagingProtocol.autonomousDrivingEnablePacket);
+
+            Close();
         }
 
         private void CloseWindowButton_Click(object sender, RoutedEventArgs e)

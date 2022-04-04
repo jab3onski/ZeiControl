@@ -204,8 +204,9 @@ namespace ZeiControl
 
         private void SliderYAxis_DragCompleted(object sender, DragCompletedEventArgs e)
         {
+            Trace.WriteLine(180 - ((Slider)sender).Value);
             MessagingProtocol.ProcessOutgoingData(
-                HelperMethods.TransformToBytePacket32Bit(((Slider)sender).Value, 0x59));
+                HelperMethods.TransformToBytePacket32Bit(180 - ((Slider)sender).Value, 0x59));
 
             YsliderDragStarted = false;
         }
@@ -214,8 +215,9 @@ namespace ZeiControl
         {
             if (!YsliderDragStarted)
             {
+                Trace.WriteLine(((Slider)sender).Value);
                 MessagingProtocol.ProcessOutgoingData(
-                    HelperMethods.TransformToBytePacket32Bit(((Slider)sender).Value, 0x59));
+                    HelperMethods.TransformToBytePacket32Bit(180 - ((Slider)sender).Value, 0x59));
             }
         }
 
@@ -344,7 +346,7 @@ namespace ZeiControl
         private void ZeroOutAxis_Click(object sender, RoutedEventArgs e)
         {
             Xslider.Value = 90;
-            Yslider.Value = 90;
+            Yslider.Value = 78;
         }
 
         private void SensorSettingsButton_Click(object sender, RoutedEventArgs e)
@@ -485,6 +487,16 @@ namespace ZeiControl
                     MessagingProtocol.ProcessOutgoingData(MessagingProtocol.buzzerOffPacket);
                 }
             }
+        }
+
+        private void CaptureSDButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CaptureHDButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
