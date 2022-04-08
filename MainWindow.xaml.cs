@@ -23,6 +23,8 @@ namespace ZeiControl
     public partial class MainWindow : Window
     {
         readonly NetworkHandling nwHandler = new();
+        private readonly string imageDirectory = "./Captures";
+        private readonly string csvDirectory = "./CSV";
 
         private bool XsliderDragStarted;
         private bool YsliderDragStarted;
@@ -32,8 +34,11 @@ namespace ZeiControl
         private bool isRelayOpen;
         private bool isFlashlightOn;
 
+        public static string ProgramPath { get; set; }
         public static int SensorUpdatesCounter { get; set; }
         public static bool AutonomousDrivingEnabled { get; set; }
+        public static bool RequestedSDImage { get; set; }
+        public static bool RequestedHDImage { get; set; }
 
         public static Image StreamSourceFrame { get; set; }             //Image object for stream display
         public static ListView DbListView { get; set; }                 //Sensor Updates ListView
@@ -72,6 +77,11 @@ namespace ZeiControl
         public MainWindow()
         {
             InitializeComponent();
+
+            HelperMethods.CreateDirIfNotExists(imageDirectory);
+            HelperMethods.CreateDirIfNotExists(csvDirectory);
+
+            ProgramPath = AppDomain.CurrentDomain.BaseDirectory;
 
             XsliderDragStarted = false;
             YsliderDragStarted = false;
@@ -491,12 +501,20 @@ namespace ZeiControl
 
         private void CaptureSDButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (!RequestedSDImage)
+            {
+                MessagingProtocol.ProcessOutgoingData(MessagingProtocol.cameraReqConfSDPacket);
+                RequestedSDImage = true;
+            }
         }
 
         private void CaptureHDButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (!RequestedHDImage)
+            {
+                MessagingProtocol.ProcessOutgoingData(MessagingProtocol.cameraReqConfHDPacket);
+                RequestedHDImage = true;
+            }
         }
     }
 }

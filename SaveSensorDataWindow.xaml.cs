@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ZeiControl.Core;
 
 namespace ZeiControl
 {
@@ -62,6 +63,18 @@ namespace ZeiControl
             try
             {
                 Core.DatabaseHandling.SaveToNewTable(connection, tableName);
+                if (CreateCSVCheckBox.IsChecked == true)
+                {
+                    DatabaseHandling.CreateCSVFile(connection, tableName);
+
+                    string path = MainWindow.ProgramPath + "CSV";
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        Arguments = path,
+                        FileName = "explorer.exe"
+                    };
+                    _ = Process.Start(startInfo);
+                }
             }
             catch (Exception ex)
             {
@@ -87,6 +100,18 @@ namespace ZeiControl
             try
             {
                 Core.DatabaseHandling.AppendToExistingTable(connection, tableName);
+                if (CreateCSVCheckBox.IsChecked == true)
+                {
+                    DatabaseHandling.CreateCSVFile(connection, tableName);
+
+                    string path = MainWindow.ProgramPath + "CSV";
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        Arguments = path,
+                        FileName = "explorer.exe"
+                    };
+                    _ = Process.Start(startInfo);
+                }
             }
             catch (Exception ex)
             {

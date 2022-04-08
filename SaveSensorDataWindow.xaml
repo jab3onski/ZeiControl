@@ -43,8 +43,11 @@
                 <Label x:Name="ErrorNameLabel" Content="Error encountered, try again." Grid.Row="1" Grid.Column="1" FontSize="9" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
                 <Label x:Name="IllegalCharacterLabel" Content="Naming error, try different name" Grid.Row="1" Grid.Column="1" FontSize="9" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
                 <Label x:Name="TableNameSuccessLabel" Content="Operation completed successfully" Grid.Row="1" Grid.Column="1" FontSize="9" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+                
                 <Button x:Name="SaveTableButton" Width="50" Height="20" Content="Save" Grid.Row="2" Grid.Column="0" Click="SaveTableButton_Click"/>
+                <CheckBox x:Name="CreateCSVCheckBox" VerticalAlignment="Bottom" HorizontalAlignment="Center" Content="Create CSV file" Grid.Row="2" Grid.Column="1"/>
                 <Button x:Name="AppendTableButton" Width="50" Height="20" Content="Append" Grid.Row="2" Grid.Column="2" Click="AppendTableButton_Click"/>
+                
                 <Button x:Name="CloseSaveDataWindow" HorizontalAlignment="Right" VerticalAlignment="Top" Width="20" Height="20" Content="&#10006;" Grid.Row="0" Grid.Column="2" Click="CloseSaveDataWindow_Click"/>
             </Grid>
             

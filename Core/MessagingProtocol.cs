@@ -15,6 +15,8 @@ namespace ZeiControl.Core
     class MessagingProtocol
     {
         private bool isTransmittingImage;
+        private bool isTransmittingRequestedCaptureSD;
+        private bool isTransmittingRequestedCaptureHD;
 
         public static bool UserNotifiedVoltage50 { get; set; }
         public static bool UserNotifiedVoltage25 { get; set; }
@@ -39,6 +41,8 @@ namespace ZeiControl.Core
         //Protocol camera commands
         public static readonly byte[] cameraEnablePacket = { 0x23, 0x43, 0x5F, 0xFF, 0xFF, 0xFF, 0xFF, 0x23 };
         public static readonly byte[] cameraDisablePacket = { 0x23, 0x43, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x23 };
+        public static readonly byte[] cameraReqConfSDPacket = { 0x23, 0x43, 0x5F, 0x00, 0x00, 0xFF, 0x00, 0x23 };
+        public static readonly byte[] cameraReqConfHDPacket = { 0x23, 0x43, 0x5F, 0x00, 0x00, 0xFF, 0xFF, 0x23 };
 
         //Misc commands (lights, beep)
         public static readonly byte[] powerLEDonPacket = { 0x23, 0x4C, 0x5F, 0x00, 0xFF, 0xFF, 0xFF, 0x23 };
@@ -59,6 +63,8 @@ namespace ZeiControl.Core
         public MessagingProtocol()
         {
             isTransmittingImage = false;
+            isTransmittingRequestedCaptureSD = false;
+            isTransmittingRequestedCaptureHD = false;
             UserNotifiedVoltage50 = false;
             UserNotifiedVoltage25 = false;
             UserNotifiedVoltage10 = false;
@@ -79,9 +85,25 @@ namespace ZeiControl.Core
                 if (data[1] == 0x4A)
                 {
                     int jpegSize = BitConverter.ToInt32(valueData32Bit);
+                    Trace.WriteLine("Expected size: " + jpegSize);
 
                     isTransmittingImage = true;
                     NetworkHandling.rxThreshold = jpegSize;
+                }
+
+                else if (data[1] == 0x43)
+                {
+                    if (data[3] == 0x00 && data[4] == 0x00 && data[5] == 0xFF)
+                    {
+                        if (data[6] == 0x00)
+                        {
+                            isTransmittingRequestedCaptureSD = true;
+                        }
+                        else if (data[6] == 0xFF)
+                        {
+                            isTransmittingRequestedCaptureHD = true;
+                        }
+                    }
                 }
 
                 else if (data[1] == 0x54)
@@ -306,19 +328,48 @@ namespace ZeiControl.Core
             {
                 isTransmittingImage = false;
 
+                if (isTransmittingRequestedCaptureSD)
+                {
+                    isTransmittingRequestedCaptureSD = false;
+                    MainWindow.RequestedSDImage = false;
+
+                    HelperMethods.SaveImageFromByteArray(data, true);
+
+                    string path = MainWindow.ProgramPath + "Captures";
+
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        Arguments = path,
+                        FileName = "explorer.exe"
+                    };
+                    _ = Process.Start(startInfo);
+                }
+
+                else if (isTransmittingRequestedCaptureHD)
+                {
+                    isTransmittingRequestedCaptureHD = false;
+                    MainWindow.RequestedHDImage = false;
+
+                    HelperMethods.SaveImageFromByteArray(data, false);
+
+                    string path = MainWindow.ProgramPath + "Captures";
+
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        Arguments = path,
+                        FileName = "explorer.exe"
+                    };
+                    _ = Process.Start(startInfo);
+                }
+
                 //Update image object to received frame
-                if (MainWindow.EnableCameraButton.IsChecked == true)
+                else if (MainWindow.EnableCameraButton.IsChecked == true)
                 {
                     MainWindow.StreamSourceFrame.Source =
                         (BitmapSource)new ImageSourceConverter().ConvertFrom(data);
                 }
 
                 NetworkHandling.rxThreshold = 8;
-            }
-            else
-            {
-                Trace.Write("Unknown Packet!##: ");
-                Trace.WriteLine(BitConverter.ToString(data).Substring(0, 8));
             }
         }
 

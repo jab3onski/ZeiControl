@@ -41,7 +41,6 @@ namespace ZeiControl.Core
                     isConnected = true;
 
                     HelperMethods.FlushSocketBuffer(tcpClient);
-                    txMessageQueue.Clear();
 
                     _ = SendMessageTask();
                     _ = ReceiveMessageTask();
@@ -143,7 +142,7 @@ namespace ZeiControl.Core
         {
             if (data.Length < 10)
             {
-                Trace.WriteLine(BitConverter.ToString(data));
+                //Trace.WriteLine(BitConverter.ToString(data));
             }
             messagingProtocol.ProcessIncomingData(data);
         }

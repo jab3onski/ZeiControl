@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -159,6 +160,28 @@ namespace ZeiControl.Core
                     Trace.WriteLine("Internal error: ");
                     Trace.WriteLine(exc.Message);
                 }
+            }
+        }
+
+        public static void CreateDirIfNotExists(string dir)
+        {
+            _ = Directory.CreateDirectory(dir);
+        }
+
+        public static void SaveImageFromByteArray(byte[] array, bool quality)
+        {
+            DateTimeOffset currentDateTime = DateTime.UtcNow;
+            string currentTimeStamp = currentDateTime.ToUnixTimeSeconds().ToString();
+
+            if (quality)
+            {
+                string path = "./Captures/IMAGE_SD_" + currentTimeStamp + ".jpg";
+                File.WriteAllBytes(path, array);
+            }
+            else
+            {
+                string path = "./Captures/IMAGE_HD_" + currentTimeStamp + ".jpg";
+                File.WriteAllBytes(path, array);
             }
         }
     }

@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ZeiControl.Core;
 
 namespace ZeiControl
 {
@@ -32,15 +33,16 @@ namespace ZeiControl
             TableItemsList = DatabaseItemsListView;
             DeleteSelectedTable = DeleteSelButton;
 
+            CreateCSVButton.IsEnabled = false;
             DeleteSelectedTable.IsEnabled = false;
             displayNeeded = true;
 
             SQLiteConnection connection;
-            connection = Core.DatabaseHandling.CreateConnection();
+            connection = DatabaseHandling.CreateConnection();
 
             try
             {
-                Core.DatabaseHandling.ListAllAvailableTables(connection);
+                DatabaseHandling.ListAllAvailableTables(connection);
             }
             catch (Exception ex)
             {
@@ -69,12 +71,13 @@ namespace ZeiControl
                 string tableName = SelectedTableBox.SelectedItem.ToString();
 
                 SQLiteConnection connection;
-                connection = Core.DatabaseHandling.CreateConnection();
+                connection = DatabaseHandling.CreateConnection();
 
                 try
                 {
-                    Core.DatabaseHandling.DisplayTableContents(connection, tableName);
+                    DatabaseHandling.DisplayTableContents(connection, tableName);
                     DeleteSelectedTable.IsEnabled = true;
+                    CreateCSVButton.IsEnabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -91,15 +94,16 @@ namespace ZeiControl
             displayNeeded = false;
 
             SQLiteConnection connection;
-            connection = Core.DatabaseHandling.CreateConnection();
+            connection = DatabaseHandling.CreateConnection();
 
             try
             {
-                Core.DatabaseHandling.DropTableFromDatabase(connection, tableName);
+                DatabaseHandling.DropTableFromDatabase(connection, tableName);
                 SelectedTableBox.Items.Remove(SelectedTableBox.SelectedItem);
                 SelectedTableBox.SelectedIndex = -1;
                 TableItemsList.Items.Clear();
                 DeleteSelectedTable.IsEnabled = false;
+                CreateCSVButton.IsEnabled = false;
             }
             catch (Exception ex)
             {
@@ -109,6 +113,32 @@ namespace ZeiControl
             finally
             {
                 displayNeeded = true;
+            }
+            connection.Close();
+        }
+
+        private void CreateCSVButton_Click(object sender, RoutedEventArgs e)
+        {
+            SQLiteConnection connection;
+            connection = DatabaseHandling.CreateConnection();
+            try
+            {
+                string tableName = SelectedTableBox.SelectedItem.ToString();
+                DatabaseHandling.CreateCSVFile(connection, tableName);
+
+                string path = MainWindow.ProgramPath + "CSV";
+
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    Arguments = path,
+                    FileName = "explorer.exe"
+                };
+                _ = Process.Start(startInfo);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("Exception encountered: ");
+                Trace.WriteLine(ex.Message);
             }
             connection.Close();
         }

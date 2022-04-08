@@ -31,8 +31,9 @@
                         <ComboBox x:Name="SelectTableComboBox" MaxDropDownHeight="400" Width="150" Height="20" SelectionChanged="SelectTableComboBox_SelectionChanged"></ComboBox>
                     </StackPanel>
                     <StackPanel Margin="50,10,10,10" Orientation="Vertical">
-                        <Button x:Name="DeleteSelButton" Margin="0,25,0,0" Width="100" Content="Delete selected" Click="DeleteSelButton_Click"/>
-                        <Button x:Name="CloseWindowButton" Margin="0,20,0,0" Width="100" Content="Close window" Click="CloseWindowButton_Click"/>
+                        <Button x:Name="CreateCSVButton" Margin="0,10,0,0" Width="100" Content="Create CSV" Click="CreateCSVButton_Click"/>
+                        <Button x:Name="DeleteSelButton" Margin="0,10,0,0" Width="100" Content="Delete selected" Click="DeleteSelButton_Click"/>
+                        <Button x:Name="CloseWindowButton" Margin="0,10,0,0" Width="100" Content="Close window" Click="CloseWindowButton_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

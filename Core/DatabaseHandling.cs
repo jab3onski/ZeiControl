@@ -1,8 +1,11 @@
-﻿using System;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -221,6 +224,46 @@ namespace ZeiControl.Core
             command.CommandText =
                 $"DROP TABLE IF EXISTS \"{tableName}\";";
             command.ExecuteNonQuery();
+        }
+
+        public static void CreateCSVFile(SQLiteConnection connection, string tableName)
+        {
+            SQLiteCommand command;
+            SQLiteDataReader sqlite_datareader;
+
+            command = connection.CreateCommand();
+            command.CommandText = $"SELECT * FROM \"{tableName}\";";
+            sqlite_datareader = command.ExecuteReader();
+
+
+            List<SensorDataCSV> sensorDataList = new();
+
+            while (sqlite_datareader.Read())
+            {
+                int id = sqlite_datareader.GetInt32(0);
+                string sensorType = sqlite_datareader.GetString(1);
+                string valueString = sqlite_datareader.GetString(2);
+                string dateTimeValue = sqlite_datareader.GetString(3);
+
+                sensorDataList.Add(new SensorDataCSV
+                { Id = id, SensorType = sensorType, SensorValue = valueString, DateTimeValue = dateTimeValue });
+            }
+
+            DateTimeOffset currentDateTime = DateTime.UtcNow;
+            string currentTimeStamp = currentDateTime.ToUnixTimeSeconds().ToString();
+
+            string path = "./CSV/" + $"{tableName}" + "_" + currentTimeStamp + ".csv";
+
+            CsvConfiguration config = new(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                Delimiter = ";"
+            };
+
+            using StreamWriter streamWriter = new(path);
+            using CsvWriter csvWriter = new(streamWriter, config);
+            csvWriter.WriteRecords(sensorDataList);
+            streamWriter.Flush();
         }
     }
 }
