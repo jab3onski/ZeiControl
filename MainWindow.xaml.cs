@@ -68,6 +68,8 @@ namespace ZeiControl
         public static Slider Yslider { get; set; }
         public static ToggleButton EnableCameraButton { get; set; }
         public static Button ZeroOutAxisButton { get; set; }
+        public static Button CaptureImageSDButton { get; set; }
+        public static Button CaptureImageHDButton { get; set; }
 
         public static Button WiFiConnectButton { get; set; }
         public static Button CloseConnectionButton { get; set; }
@@ -128,6 +130,8 @@ namespace ZeiControl
 
             EnableCameraButton = CameraButton;
             ZeroOutAxisButton = ZeroOutAxis;
+            CaptureImageSDButton = CaptureSDButton;
+            CaptureImageHDButton = CaptureHDButton;
 
             HelperMethods.ChangePropertyVariableWiFi(false);
 

@@ -36,7 +36,7 @@ namespace ZeiControl.Core
                 try
                 {
                     tcpClient = new();
-                    tcpClient.ReceiveBufferSize = 131072; //128kb buffer (images go up to around 110kb)
+                    tcpClient.ReceiveBufferSize = 524288; //512kb buffer (images go up to around 110kb)
                     tcpClient.Connect(hostEndPoint);
                     isConnected = true;
 
@@ -71,7 +71,6 @@ namespace ZeiControl.Core
                     tcpClient.Client.Shutdown(SocketShutdown.Both);
                     tcpClient.Client.Close();
 
-                    isConnected = false;
                     HelperMethods.ChangePropertyVariableWiFi(false);
                     MainWindow.NotificationsListView.Items.Insert(0, NotificationData.WiFiDisconnected);
                 }
@@ -114,13 +113,13 @@ namespace ZeiControl.Core
 
         private async Task ReceiveMessageTask()
         {
+            NetworkStream networkStream = tcpClient.GetStream();
             while (isConnected)
             {
                 if (tcpClient.Available >= rxThreshold)
                 {
                     try
                     {
-                        NetworkStream networkStream = tcpClient.GetStream();
                         if (networkStream.CanRead)
                         {
                             byte[] receivedBytes = new byte[rxThreshold];
@@ -136,6 +135,7 @@ namespace ZeiControl.Core
                 }
                 await Task.Delay(20);
             }
+            networkStream.Close();
         }
 
         private void OnDataReceived(byte[] data)

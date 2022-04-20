@@ -210,16 +210,25 @@ namespace ZeiControl.Core
                     if (data[3] == 0x00 && data[4] == 0x00)
                     {
                         double voltageValue = Math.Round(diagnosticsValue * 8.4 / 1023.0, 2);
-                        MainWindow.CellVoltageTextBlock.Text = 
-                            string.Concat(voltageValue.ToString(), " V");
 
-                        byte voltageScale255 = HelperMethods.RescaleToByteValue(6, 8.4, 0, 255, voltageValue);
+                        if (voltageValue is < 6.0 or > 8.4)
+                        {
+                            MainWindow.CellVoltageTextBlock.Text = voltageValue < 6.0 ? "UNDERVOLTAGE" : "OVERVOLTAGE";
+                            MainWindow.CellVoltageTextBlock.Foreground = Brushes.Red;
+                        }
+                        else
+                        {
+                            MainWindow.CellVoltageTextBlock.Text =
+                                string.Concat(voltageValue.ToString(), " V");
 
-                        byte redValue = voltageScale255;
-                        byte greenValue = (byte)(255 - redValue);
-                        SolidColorBrush voltageColorBrush = new(Color.FromRgb(greenValue, redValue, 0)); // Colors are reversed
+                            byte voltageScale255 = HelperMethods.RescaleToByteValue(6, 8.4, 0, 255, voltageValue);
 
-                        MainWindow.CellVoltageTextBlock.Foreground = voltageColorBrush;
+                            byte redValue = voltageScale255;
+                            byte greenValue = (byte)(255 - redValue);
+                            SolidColorBrush voltageColorBrush = new(Color.FromRgb(greenValue, redValue, 0)); // Colors are reversed
+
+                            MainWindow.CellVoltageTextBlock.Foreground = voltageColorBrush;
+                        }
 
                         //Safe voltage range for 2S Lithium Polymer battery is 6.0V - 8.4V
                         if (voltageValue < 6.24)
@@ -255,10 +264,19 @@ namespace ZeiControl.Core
 
                     else if (data[3] == 0x00 && data[4] == 0xFF)
                     {
+                        if (diagnosticsValue < 30)
+                        {
+                            diagnosticsValue = 30;
+                        }
+                        else if (diagnosticsValue > 105)
+                        {
+                            diagnosticsValue = 105;
+                        }
+
                         MainWindow.RRSITextBlock.Text =
                             string.Concat("-", diagnosticsValue.ToString(), " dBm");
 
-                        byte RSSIScale255 = HelperMethods.RescaleToByteValue(50, 105, 0, 255, diagnosticsValue);
+                        byte RSSIScale255 = HelperMethods.RescaleToByteValue(30, 105, 0, 255, diagnosticsValue);
 
                         byte redValue = RSSIScale255;
                         byte greenValue = (byte)(255 - redValue);

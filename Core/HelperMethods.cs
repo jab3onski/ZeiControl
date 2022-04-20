@@ -78,6 +78,8 @@ namespace ZeiControl.Core
 
                 MainWindow.EnableCameraButton.IsEnabled = true;
                 MainWindow.ZeroOutAxisButton.IsEnabled = true;
+                MainWindow.CaptureImageHDButton.IsEnabled = true;
+                MainWindow.CaptureImageSDButton.IsEnabled = true;
 
                 MainWindow.Xslider.IsEnabled = true;
                 MainWindow.Yslider.IsEnabled = true;
@@ -107,6 +109,8 @@ namespace ZeiControl.Core
 
                 MainWindow.EnableCameraButton.IsEnabled = false;
                 MainWindow.ZeroOutAxisButton.IsEnabled = false;
+                MainWindow.CaptureImageHDButton.IsEnabled = false;
+                MainWindow.CaptureImageSDButton.IsEnabled = false;
 
                 MainWindow.Xslider.IsEnabled = false;
                 MainWindow.Yslider.IsEnabled = false;
