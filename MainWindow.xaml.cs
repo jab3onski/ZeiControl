@@ -22,7 +22,7 @@ namespace ZeiControl
 {
     public partial class MainWindow : Window
     {
-        readonly NetworkHandling nwHandler = new();
+        private readonly NetworkHandling nwHandler = new();
         private readonly string imageDirectory = "./Captures";
         private readonly string csvDirectory = "./CSV";
 
@@ -218,7 +218,6 @@ namespace ZeiControl
 
         private void SliderYAxis_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            Trace.WriteLine(180 - ((Slider)sender).Value);
             MessagingProtocol.ProcessOutgoingData(
                 HelperMethods.TransformToBytePacket32Bit(180 - ((Slider)sender).Value, 0x59));
 
@@ -229,7 +228,6 @@ namespace ZeiControl
         {
             if (!YsliderDragStarted)
             {
-                Trace.WriteLine(((Slider)sender).Value);
                 MessagingProtocol.ProcessOutgoingData(
                     HelperMethods.TransformToBytePacket32Bit(180 - ((Slider)sender).Value, 0x59));
             }

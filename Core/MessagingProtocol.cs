@@ -52,7 +52,6 @@ namespace ZeiControl.Core
 
         //Sensor Commands
         public static readonly byte[] requestTempValuePacket = { 0x23, 0x49, 0x5F, 0xFF, 0x00, 0x00, 0x00, 0x23 };
-        public static readonly byte[] requestProxValuePacket = { 0x23, 0x49, 0x5F, 0xFF, 0x00, 0x00, 0xFF, 0x23 };
 
         //Autonomous Driving commands
         public static readonly byte[] autonomousDrivingEnablePacket = { 0x23, 0x41, 0x5F, 0x00, 0x00, 0x00, 0xFF, 0x23 };
@@ -172,15 +171,9 @@ namespace ZeiControl.Core
                         double distanceValue =
                             Math.Pow(proximityValue * 3.15 / 675.0, -1.173) * 29.988;
 
-                        if (distanceValue <= 90)
-                        {
-                            MainWindow.FrontSensorTextBlock.Text =
-                            string.Concat(Math.Round(distanceValue, 1).ToString(), " cm");
-                        }
-                        else
-                        {
-                            MainWindow.FrontSensorTextBlock.Text = "Overrange";
-                        }
+                        MainWindow.FrontSensorTextBlock.Text =
+                            distanceValue is <= 80 and >= 10 ? string.Concat(
+                                Math.Round(distanceValue, 1).ToString(), " cm") : "Overrange";
                     }
 
                 }
@@ -305,21 +298,16 @@ namespace ZeiControl.Core
 
                 else if (data[1] == 0x41)
                 {
-                    if (data[3] == 0xFF)
+                    if (data[3] == 0xFF && data[4] == 0x00)
                     {
                         if (data[6] == 0xFF)
                         {
-                            MainWindow.AutonomousDrivingButton.Content = "Disable EM";
-                            MainWindow.AutonomousDrivingEnabled = true;
-                            MainWindow.EnableCameraButton.IsChecked = false;
-                            MainWindow.EnableCameraButton.IsEnabled = false;
+                            HelperMethods.EMModeEnabled(true);
                             MainWindow.NotificationsListView.Items.Insert(0, NotificationData.AutonomousDrivingActive);
                         }
                         else if (data[6] == 0x00)
                         {
-                            MainWindow.AutonomousDrivingButton.Content = "Exploration Mode";
-                            MainWindow.AutonomousDrivingEnabled = false;
-                            MainWindow.EnableCameraButton.IsEnabled = true;
+                            HelperMethods.EMModeEnabled(false);
                             MainWindow.NotificationsListView.Items.Insert(0, NotificationData.AutonomousDrivingInactive);
                         }
                     }
@@ -335,11 +323,11 @@ namespace ZeiControl.Core
                         {
                             SensorSettingsWindow.TextBoxTempInterval.Text = intervalValue.ToString();
                         }
-                        else if (data[4] == 0xFF)
-                        {
-                            SensorSettingsWindow.TextBoxProximityInterval.Text = intervalValue.ToString();
-                        }
                     }
+                }
+                else
+                {
+                    Trace.WriteLine("Unknown Packet");
                 }
             }
             else if (isTransmittingImage && data[0] == 0xFF && data[1] == 0xD8)

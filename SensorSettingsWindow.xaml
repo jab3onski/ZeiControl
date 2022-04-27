@@ -34,11 +34,9 @@
                         </ToolTip>
                     </Image.ToolTip>
                 </Image>
-                <Label Margin="0,10,0,0" HorizontalAlignment="Center" Content="Proximity Sensors Interval"/>
-                <TextBox x:Name="ProximityIntervalBox" Width="75" PreviewTextInput="ProximityIntervalBox_PreviewTextInput"/>
                 <Label HorizontalAlignment="Center" Content="Temperature Sensor Interval"/>
                 <TextBox x:Name="TemperatureIntervalBox" Width="75" PreviewTextInput="TemperatureIntervalBox_PreviewTextInput"/>
-                <Grid Margin="0,50,0,0">
+                <Grid Margin="0,100,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>

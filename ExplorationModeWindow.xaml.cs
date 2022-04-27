@@ -36,10 +36,6 @@ namespace ZeiControl
             int selectedQuality = PictureQualityBox.SelectedIndex;
             int selectedTurnSharpness = TurnPresetBox.SelectedIndex;
 
-            Trace.WriteLine(selectedInterval);
-            Trace.WriteLine(selectedQuality);
-            Trace.WriteLine(selectedTurnSharpness);
-
             MessagingProtocol.ProcessOutgoingData(
                 HelperMethods.TransformToBytePacket16Bit(selectedInterval, 0x46, 0x00, 0x00));
             MessagingProtocol.ProcessOutgoingData(

@@ -27,7 +27,7 @@
                 </Border.Clip>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Margin="10" Orientation="Vertical">
-                        <Label Content="Tables available to view:"/>
+                        <Label Content="Available tables:"/>
                         <ComboBox x:Name="SelectTableComboBox" MaxDropDownHeight="400" Width="150" Height="20" SelectionChanged="SelectTableComboBox_SelectionChanged"></ComboBox>
                     </StackPanel>
                     <StackPanel Margin="50,10,10,10" Orientation="Vertical">

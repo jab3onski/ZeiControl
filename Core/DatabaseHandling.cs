@@ -38,8 +38,8 @@ namespace ZeiControl.Core
             command = connection.CreateCommand();
             command.CommandText =
                 $"INSERT INTO temp (sensorType, value) VALUES ('{type}', '{value}');";
-            command.ExecuteNonQuery();
-        } 
+            _ = command.ExecuteNonQuery();
+        }
 
         public static void SaveToNewTable(SQLiteConnection connection, string tablename)
         {
@@ -256,7 +256,6 @@ namespace ZeiControl.Core
 
             CsvConfiguration config = new(CultureInfo.InvariantCulture)
             {
-                HasHeaderRecord = true,
                 Delimiter = ";"
             };
 
