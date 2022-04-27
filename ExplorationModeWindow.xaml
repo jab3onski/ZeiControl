@@ -1,0 +1,71 @@
+﻿<Window x:Class="ZeiControl.ExplorationModeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZeiControl"
+        mc:Ignorable="d"
+        Title="Exploration Mode" Height="350" Width="225"
+        ResizeMode="NoResize" WindowStyle="None"
+        WindowStartupLocation="CenterOwner"
+        Background="Transparent" AllowsTransparency="True">
+
+    <Border CornerRadius="20">
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1">
+                <GradientStop Color="#C5E3FF" Offset="0"></GradientStop>
+                <GradientStop Color="#95BBEE" Offset="0.7"></GradientStop>
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <StackPanel Orientation="Vertical">
+            <Border Margin="15" Height="320" Width="195" Background="White" Grid.Row="0" Grid.Column="0">
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,195,320"></RectangleGeometry>
+                </Border.Clip>
+
+                <StackPanel Orientation="Vertical">
+                    <Label FontSize="15" HorizontalAlignment="Center" Content="Autonomous Exploration" Margin="5"/>
+                    <Image ToolTipService.InitialShowDelay="500" ToolTipService.ShowDuration="20000" Height="16" Width="16" Source="pack://application:,,,/Images/ToolTipIcon.png">
+                        <Image.ToolTip>
+                            <ToolTip HasDropShadow="True">
+                                <TextBlock Width="200" TextWrapping="Wrap">
+                                    Autonomous Exploration mode enables device self-driving capabilities and timed image capturing. Please keep in mind the device must be constantly supervised, as it won't detect most narrow objects due to limited amount of precise sensors. Controlled environment should be provided.
+                                </TextBlock>
+                            </ToolTip>
+                        </Image.ToolTip>
+                    </Image>
+                    <StackPanel Margin="5,10,0,0" Orientation="Vertical">
+                        <Label Content="Capture interval:"/>
+                        <ComboBox x:Name="CaptureIntervalBox" Margin="5,5,0,0" HorizontalAlignment="Left" Width="100">
+                            <ComboBoxItem Content="5s"/>
+                            <ComboBoxItem Content="10s"/>
+                            <ComboBoxItem Content="15s" IsSelected="True"/>
+                            <ComboBoxItem Content="20s"/>
+                            <ComboBoxItem Content="25s"/>
+                            <ComboBoxItem Content="30s"/>
+                        </ComboBox>
+                        <Label Content="Picture quality:"/>
+                        <ComboBox x:Name="PictureQualityBox" Margin="5,5,0,0" HorizontalAlignment="Left" Width="100">
+                            <ComboBoxItem Content="High"/>
+                            <ComboBoxItem Content="Medium" IsSelected="True"/>
+                            <ComboBoxItem Content="Low"/>
+                        </ComboBox>
+                        <Label Content="Turn preset:"/>
+                        <ComboBox x:Name="TurnPresetBox" Margin="5,5,0,0" HorizontalAlignment="Left" Width="100">
+                            <ComboBoxItem Content="Sharp"/>
+                            <ComboBoxItem Content="Medium" IsSelected="True"/>
+                            <ComboBoxItem Content="Light"/>
+                            <ComboBoxItem Content="None"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <UniformGrid Columns="2" Margin="0,50,0,0">
+                        <Button Margin="5" x:Name="StartButton" Content="Start" Click="StartButton_Click"/>
+                        <Button Margin="5" x:Name="CloseWindowButton" Content="Exit" Click="CloseWindowButton_Click"/>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Border>
+</Window>

@@ -1,0 +1,57 @@
+﻿<Window x:Class="ZeiControl.SaveSensorDataWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZeiControl"
+        mc:Ignorable="d"
+        ResizeMode="NoResize" WindowStyle="None"
+        WindowStartupLocation="CenterOwner"
+        Background="Transparent" AllowsTransparency="True"
+        Title="SaveSensorDataWindow" Height="150" Width="300">
+
+    <Border CornerRadius="20">
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1">
+                <GradientStop Color="#C5E3FF" Offset="0"></GradientStop>
+                <GradientStop Color="#95BBEE" Offset="0.7"></GradientStop>
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <Border Margin="15" Width="270" Background="White" Grid.Row="0" Grid.Column="0">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,270,120"></RectangleGeometry>
+            </Border.Clip>
+
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBox x:Name="TableNameBox" Height="20" Width="150" Grid.Row="0" Grid.Column="1"/>
+                <Label x:Name="DefaultNameLabel" Content="Provide table name above" Grid.Row="1" Grid.Column="1" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label x:Name="TableNameExistsLabel" Content="Table with this name already exists!" Grid.Row="1" Grid.Column="1" FontSize="9" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+                <Label x:Name="TableNotExistsLabel" Content="Table does not exist" Grid.Row="1" Grid.Column="1" FontSize="9" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+                <Label x:Name="ErrorNameLabel" Content="Error encountered, try again." Grid.Row="1" Grid.Column="1" FontSize="9" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+                <Label x:Name="IllegalCharacterLabel" Content="Naming error, try different name" Grid.Row="1" Grid.Column="1" FontSize="9" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+                <Label x:Name="TableNameSuccessLabel" Content="Operation completed successfully" Grid.Row="1" Grid.Column="1" FontSize="9" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+                
+                <Button x:Name="SaveTableButton" Width="50" Height="20" Content="Save" Grid.Row="2" Grid.Column="0" Click="SaveTableButton_Click"/>
+                <CheckBox x:Name="CreateCSVCheckBox" VerticalAlignment="Bottom" HorizontalAlignment="Center" Content="Create CSV file" Grid.Row="2" Grid.Column="1"/>
+                <Button x:Name="AppendTableButton" Width="50" Height="20" Content="Append" Grid.Row="2" Grid.Column="2" Click="AppendTableButton_Click"/>
+                
+                <Button x:Name="CloseSaveDataWindow" HorizontalAlignment="Right" VerticalAlignment="Top" Width="20" Height="20" Content="&#10006;" Grid.Row="0" Grid.Column="2" Click="CloseSaveDataWindow_Click"/>
+            </Grid>
+            
+        </Border>
+
+    </Border>
+</Window>

@@ -19,10 +19,15 @@ namespace ZeiControl.Core
         public static List<byte[]> txMessageQueue = new();
         public static TcpClient tcpClient;
 
-        private bool isConnected;
-        public static int rxThreshold = 8;
+        public static bool isConnected;
+        public static int rxThreshold;
 
         private readonly MessagingProtocol messagingProtocol = new();
+
+        public NetworkHandling()
+        {
+            rxThreshold = 8;
+        }
 
         public void StartConnectionStream()
         {
@@ -31,18 +36,24 @@ namespace ZeiControl.Core
                 try
                 {
                     tcpClient = new();
-                    tcpClient.ReceiveBufferSize = 131072; //128kb buffer (images go up to around 110kb)
-                    tcpClient.SendBufferSize = 128;
+                    tcpClient.ReceiveBufferSize = 524288; //512kb buffer (images go up to around 110kb)
                     tcpClient.Connect(hostEndPoint);
                     isConnected = true;
 
+                    HelperMethods.FlushSocketBuffer(tcpClient);
+
                     _ = SendMessageTask();
                     _ = ReceiveMessageTask();
+
+                    HelperMethods.ChangePropertyVariableWiFi(true);
+
+                    MainWindow.NotificationsListView.Items.Insert(0, NotificationData.LoginAttemptSuccessfull);
                 }
                 catch (Exception exc)
                 {
                     Trace.WriteLine("Internal error: ");
                     Trace.WriteLine(exc.Message);
+                    MainWindow.NotificationsListView.Items.Insert(0, NotificationData.LoginAttemptFailed);
                     isConnected = false;
                 }
             }
@@ -60,7 +71,8 @@ namespace ZeiControl.Core
                     tcpClient.Client.Shutdown(SocketShutdown.Both);
                     tcpClient.Client.Close();
 
-                    isConnected = false;
+                    HelperMethods.ChangePropertyVariableWiFi(false);
+                    MainWindow.NotificationsListView.Items.Insert(0, NotificationData.WiFiDisconnected);
                 }
                 catch (Exception exc)
                 {
@@ -80,15 +92,14 @@ namespace ZeiControl.Core
                 {
                     try
                     {
-                        if (networkStream.CanWrite)
-                        {
-                            networkStream.Write(txMessageQueue[0]);
-                        }
+                        networkStream.Write(txMessageQueue[0]);
                     }
                     catch (Exception exc)
                     {
                         Trace.WriteLine("Internal error: ");
                         Trace.WriteLine(exc.Message);
+                        MainWindow.NotificationsListView.Items.Insert(0, NotificationData.WiFiInterrupted);
+                        HelperMethods.ChangePropertyVariableWiFi(false);
                     }
                     finally
                     {
@@ -102,16 +113,16 @@ namespace ZeiControl.Core
 
         private async Task ReceiveMessageTask()
         {
+            NetworkStream networkStream = tcpClient.GetStream();
             while (isConnected)
             {
                 if (tcpClient.Available >= rxThreshold)
                 {
                     try
                     {
-                        NetworkStream networkStream = tcpClient.GetStream();
                         if (networkStream.CanRead)
                         {
-                            byte[] receivedBytes = new byte[tcpClient.ReceiveBufferSize];
+                            byte[] receivedBytes = new byte[rxThreshold];
                             networkStream.Read(receivedBytes, 0, rxThreshold);
                             OnDataReceived(receivedBytes);
                         }
@@ -124,10 +135,15 @@ namespace ZeiControl.Core
                 }
                 await Task.Delay(20);
             }
+            networkStream.Close();
         }
 
         private void OnDataReceived(byte[] data)
         {
+            if (data.Length < 10)
+            {
+                //Trace.WriteLine(BitConverter.ToString(data));
+            }
             messagingProtocol.ProcessIncomingData(data);
         }
     }
